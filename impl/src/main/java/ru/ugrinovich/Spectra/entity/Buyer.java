@@ -1,7 +1,10 @@
 package ru.ugrinovich.Spectra.entity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,4 +36,14 @@ public class Buyer {
 
     @OneToMany(mappedBy = "buyer")
     private List<Item> Items;
+
+    @CreationTimestamp
+    @Column(name = "create_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant createAt;
+
+    @UpdateTimestamp
+    @Column(name = "update_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant updateAt;
 }

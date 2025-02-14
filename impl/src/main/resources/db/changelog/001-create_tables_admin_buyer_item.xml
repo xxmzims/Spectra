@@ -1,0 +1,58 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+    <!-- Buyer Table -->
+    <changeSet id="create-table-buyer" author="Maksim Ugrinovich">
+        <createTable tableName="Buyer">
+            <column name="buyer_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)" remarks="Имя покупателя"/>
+            <column name="second_name" type="VARCHAR(255)" remarks="Фамилия покупателя"/>
+            <column name="age" type="INT" remarks="Возраст покупателя"/>
+            <column name="email" type="VARCHAR(255)" remarks="Email-адрес покупателя"/>
+            <column name="create_at" type="TIMESTAMP" remarks="Дата создания"/>
+            <column name="update_at" type="TIMESTAMP" remarks="дата обновления"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Administrator Table -->
+    <changeSet id="create-table-administrator" author="your_name">
+        <createTable tableName="Administrator">
+            <column name="admin_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="Имя администратора"/>
+            <column name="create_at" type="TIMESTAMP" remarks="Дата создания"/>
+            <column name="update_at" type="TIMESTAMP" remarks="дата обновления"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Item Table -->
+    <changeSet id="create-table-item" author="your_name">
+        <createTable tableName="Item">
+            <column name="item_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)" remarks="Название товара"/>
+            <column name="serial_number" type="VARCHAR(255)" remarks="Серийный номер товара"/>
+            <column name="description" type="TEXT" remarks="Описание товара"/>
+            <column name="category" type="VARCHAR(255)" remarks="Категория товара"/>
+            <column name="create_at" type="TIMESTAMP" remarks="Дата создания"/>
+            <column name="update_at" type="TIMESTAMP" remarks="дата обновления"/>
+            <column name="buyer_id" type="UUID"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="Item"
+                baseColumnNames="buyer_id"
+                referencedTableName="Buyer"
+                referencedColumnNames="buyer_id"
+                constraintName="fk_item_buyer"
+                onDelete="SET NULL"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

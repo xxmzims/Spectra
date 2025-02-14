@@ -2,7 +2,10 @@ package ru.ugrinovich.Spectra.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -20,4 +23,14 @@ public class Administrator {
 
     @Column(name = "name")
     private String name;
+
+    @CreationTimestamp
+    @Column(name = "create_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant createAt;
+
+    @UpdateTimestamp
+    @Column(name = "update_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant updateAt;
 }
