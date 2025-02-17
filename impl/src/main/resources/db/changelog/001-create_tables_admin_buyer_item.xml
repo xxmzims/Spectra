@@ -5,7 +5,12 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
     <!-- Buyer Table -->
     <changeSet id="create-table-buyer" author="Maksim Ugrinovich">
-        <createTable tableName="Buyer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="buyer"/>
+            </not>
+        </preConditions>
+        <createTable tableName="buyer">
             <column name="buyer_id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -20,7 +25,12 @@
 
     <!-- Administrator Table -->
     <changeSet id="create-table-administrator" author="your_name">
-        <createTable tableName="Administrator">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="administrator"/>
+            </not>
+        </preConditions>
+        <createTable tableName="administrator">
             <column name="admin_id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -32,7 +42,12 @@
 
     <!-- Item Table -->
     <changeSet id="create-table-item" author="your_name">
-        <createTable tableName="Item">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="item"/>
+            </not>
+        </preConditions>
+        <createTable tableName="item">
             <column name="item_id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -46,9 +61,9 @@
         </createTable>
 
         <addForeignKeyConstraint
-                baseTableName="Item"
+                baseTableName="item"
                 baseColumnNames="buyer_id"
-                referencedTableName="Buyer"
+                referencedTableName="buyer"
                 referencedColumnNames="buyer_id"
                 constraintName="fk_item_buyer"
                 onDelete="SET NULL"

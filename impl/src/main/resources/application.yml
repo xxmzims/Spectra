@@ -12,3 +12,6 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog.xml
     enabled: true
+app:
+  in-memory-model:
+    enabled: false

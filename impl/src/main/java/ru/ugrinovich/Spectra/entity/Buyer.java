@@ -13,12 +13,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "Buyer")
+@Table(name = "buyer")
 @EqualsAndHashCode
 public class Buyer {
 
     @Id
-    @Column(name = "buyer_id")
+    @Column(name = "buyer_id" )
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 

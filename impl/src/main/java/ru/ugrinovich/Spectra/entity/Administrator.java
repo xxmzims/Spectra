@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "Administrator")
+@Table(name = "administrator")
 public class Administrator {
 
     @Id
