@@ -24,7 +24,7 @@
     </changeSet>
 
     <!-- Administrator Table -->
-    <changeSet id="create-table-administrator" author="your_name">
+    <changeSet id="create-table-administrator" author="Maksim Ugrinovitch">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="administrator"/>
@@ -41,7 +41,7 @@
     </changeSet>
 
     <!-- Item Table -->
-    <changeSet id="create-table-item" author="your_name">
+    <changeSet id="create-table-item" author="Maksim Ugrinovitch">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="item"/>

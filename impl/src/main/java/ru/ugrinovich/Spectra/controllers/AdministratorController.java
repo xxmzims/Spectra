@@ -29,8 +29,9 @@ public class AdministratorController implements AdministratorAPI {
     private final AdministratorService administratorsService;
 
     public List<AdministratorResponse> findAllAdministrators() {
-       List<AdministratorResponse> administratorResponse =  administratorMapper.toAdministratorResponse(administratorsService.findAllAdministrators());
-        log.info("Найдены админнистраторы с id {}", administratorsService.findAllAdministrators().stream().map(Administrator::getAdminId).collect(Collectors.toList()));
+        List<Administrator> administrators = administratorsService.findAllAdministrators();
+       List<AdministratorResponse> administratorResponse =  administratorMapper.toAdministratorResponse(administrators);
+        log.info("Найдены администраторы с id {}", administrators.stream().map(Administrator::getAdminId).collect(Collectors.toList()));
         return administratorResponse;
     }
 
