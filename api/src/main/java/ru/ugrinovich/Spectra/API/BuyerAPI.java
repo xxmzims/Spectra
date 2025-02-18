@@ -29,7 +29,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping()
-    List<BuyerResponse> findAllBuyers();
+    ResponseEntity<List<BuyerResponse>> findAllBuyers();
 
     @Operation(summary = "Создание нового покупателя")
     @ApiResponses(value = {
@@ -39,7 +39,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/new")
-    ResponseEntity<HttpStatus> createBuyer(@RequestBody BuyerCreateRequest buyer);
+    ResponseEntity<BuyerResponse> createBuyer(@RequestBody BuyerCreateRequest buyer);
 
     @Operation(summary = "Получение данных покупателя по идентификатору")
     @ApiResponses(value = {
@@ -49,7 +49,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{buyerId}")
-    BuyerResponse getBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId);
+    ResponseEntity<BuyerResponse> getBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId);
 
     @Operation(summary = "Удаление данных покупателя по идентификатору")
     @ApiResponses(value = {
@@ -69,7 +69,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping("/{buyerId}/update")
-    ResponseEntity<HttpStatus> updateBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId, @RequestBody BuyerUpdateRequest buyer);
+    ResponseEntity<BuyerResponse> updateBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId, @RequestBody BuyerUpdateRequest buyer);
 
     @Operation(summary = "Присвоение покупателю(обращаемся по его уникальному идентификатору) товара по уникальному идентификатору товара")
     @ApiResponses(value = {
@@ -79,7 +79,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping("/{buyerId}/assign_item/{itemId}")
-    ResponseEntity<HttpStatus> assignItem(@PathVariable("buyerId")
+    ResponseEntity<BuyerResponse> assignItem(@PathVariable("buyerId")
                                           @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId,
                                           @PathVariable("itemId")
                                           @Parameter(description = "Уникальный идентификатор товара") UUID itemId);

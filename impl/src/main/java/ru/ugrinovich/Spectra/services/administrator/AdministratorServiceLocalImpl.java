@@ -33,7 +33,8 @@ public class AdministratorServiceLocalImpl implements AdministratorService{
         administratorRepository.deleteById(id);
     }
 
-    public void updateById(UUID id, Administrator administrator) {
+    public Administrator updateById(UUID id, Administrator administrator) {
         administratorRepository.updateById(id, administrator);
+        return administrator;
     }
 }

@@ -13,6 +13,12 @@ import java.util.List;
 public interface BuyerMapper {
     Buyer toBuyer(BuyerDTO buyerDTO);
 
+    Buyer toBuyer(BuyerCreateRequest buyerCreateRequest);
+
+    Buyer toBuyer(BuyerUpdateRequest buyerUpdateRequest);
+
+    BuyerResponse toBuyerResponse(Buyer buyer);
+
     BuyerDTO toBuyerDTO(Buyer buyer);
 
     BuyerResponse toBuyerResponse(BuyerDTO buyerDTO);

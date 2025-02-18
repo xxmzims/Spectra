@@ -40,7 +40,7 @@ public interface ItemAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/new")
-    ResponseEntity<HttpStatus> createItem(@RequestBody ItemCreateRequest item);
+    ResponseEntity<ItemResponse> createItem(@RequestBody ItemCreateRequest item);
 
     @Operation(summary = "Получение данных товара по уникальному идентификатору")
     @ApiResponses(value = {
@@ -50,7 +50,7 @@ public interface ItemAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{itemId}")
-    ItemResponse getItem(@PathVariable("itemId") @Parameter(description = "Уникальный идентификатор") UUID itemId);
+    ResponseEntity<ItemResponse> getItem(@PathVariable("itemId") @Parameter(description = "Уникальный идентификатор") UUID itemId);
 
     @Operation(summary = "Обновление данных товара по уникальному идентификатору")
     @ApiResponses(value = {
@@ -60,7 +60,7 @@ public interface ItemAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping("/{itemId}/update")
-    ResponseEntity<HttpStatus> updateItem(@PathVariable("itemId") @Parameter(description = "Уникальный идентификатор") UUID itemId, @RequestBody ItemUpdateRequest item);
+    ResponseEntity<ItemResponse> updateItem(@PathVariable("itemId") @Parameter(description = "Уникальный идентификатор") UUID itemId, @RequestBody ItemUpdateRequest item);
 
     @Operation(summary = "Удаление данных товара по уникальному идентификатору")
     @ApiResponses(value = {
@@ -80,5 +80,5 @@ public interface ItemAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/serial/{serialNumber}")
-    ItemResponse getItem(@PathVariable("serialNumber") @Parameter(description = "Серийный номер товара") String serialNumber);
+    ResponseEntity<ItemResponse> getItem(@PathVariable("serialNumber") @Parameter(description = "Серийный номер товара") String serialNumber);
 }

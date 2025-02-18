@@ -28,7 +28,7 @@ public interface AdministratorAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping()
-    List<AdministratorResponse> findAllAdministrators();
+    ResponseEntity<List<AdministratorResponse>> findAllAdministrators();
 
     @Operation(summary = "Создание нового администратора")
     @ApiResponses(value = {
@@ -38,7 +38,7 @@ public interface AdministratorAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/new")
-    ResponseEntity<HttpStatus> createAdministrator(@RequestBody AdministratorCreateRequest administrator);
+    ResponseEntity<AdministratorResponse> createAdministrator(@RequestBody AdministratorCreateRequest administrator);
 
     @Operation(summary = "Получение данных администратора по его уникальному идентификатору")
     @ApiResponses(value = {
@@ -48,7 +48,7 @@ public interface AdministratorAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{id}")
-    AdministratorResponse getAdministrator(@PathVariable @Parameter(description = "Уникальный идентификатор") UUID id);
+    ResponseEntity<AdministratorResponse> getAdministrator(@PathVariable @Parameter(description = "Уникальный идентификатор") UUID id);
 
     @Operation(summary = "Удаление данных администратора по его уникальному идентификатору")
     @ApiResponses(value = {
@@ -68,5 +68,5 @@ public interface AdministratorAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping("/{id}/update")
-    ResponseEntity<HttpStatus> updateAdministrator(@PathVariable @Parameter(description = "Уникальный идентификатор") UUID id, @RequestBody AdministratorUpdateRequest administrator);
+    ResponseEntity<AdministratorResponse> updateAdministrator(@PathVariable @Parameter(description = "Уникальный идентификатор") UUID id, @RequestBody AdministratorUpdateRequest administrator);
 }

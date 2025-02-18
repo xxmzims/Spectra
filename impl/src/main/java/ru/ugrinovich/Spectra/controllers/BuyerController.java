@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -28,28 +31,26 @@ public class BuyerController implements BuyerAPI {
 
     private final BuyerMapper buyerMapper;
 
-    public List<BuyerResponse> findAllBuyers() {
+    public ResponseEntity<List<BuyerResponse>> findAllBuyers() {
         List<Buyer> buyers = buyersService.findAllBuyers();
         List<BuyerResponse> buyerResponseList =  buyerMapper.toBuyerResponses(buyers);
         log.info("Найдены покупатели с id {}", buyers.stream().map(Buyer::getId).collect(Collectors.toList()));
 
-        return buyerResponseList;
+        return ResponseEntity.ok(buyerResponseList);
     }
 
-    public ResponseEntity<HttpStatus> createBuyer(BuyerCreateRequest buyerCreateRequest) {
-        BuyerDTO buyerDTO = buyerMapper.toBuyerDTO(buyerCreateRequest);
-        Buyer buyer = buyerMapper.toBuyer(buyerDTO);
+    public ResponseEntity<BuyerResponse> createBuyer(BuyerCreateRequest buyerCreateRequest) {
+        Buyer buyer = buyerMapper.toBuyer(buyerCreateRequest);
         buyersService.save(buyer);
         log.info("Создан покупатель с id {}", buyer.getId());
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return new ResponseEntity<>(buyerMapper.toBuyerResponse(buyer), CREATED);
     }
 
-    public BuyerResponse getBuyer(UUID id) {
+    public ResponseEntity<BuyerResponse> getBuyer(UUID id) {
         Buyer buyer = buyersService.findById(id);
-        BuyerDTO buyerDTO =  buyerMapper.toBuyerDTO(buyer);
         log.info("Найден покупатель с id {}", buyer.getId());
 
-        return buyerMapper.toBuyerResponse(buyerDTO);
+        return ResponseEntity.ok(buyerMapper.toBuyerResponse(buyer));
     }
 
     public ResponseEntity<HttpStatus> deleteBuyer(UUID id) {
@@ -58,18 +59,17 @@ public class BuyerController implements BuyerAPI {
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
-    public ResponseEntity<HttpStatus> updateBuyer(UUID id, BuyerUpdateRequest buyerUpdateRequest) {
-        BuyerDTO buyerDTO = buyerMapper.toBuyerDTO(buyerUpdateRequest);
-        Buyer buyer = buyerMapper.toBuyer(buyerDTO);
+    public ResponseEntity<BuyerResponse> updateBuyer(UUID id, BuyerUpdateRequest buyerUpdateRequest) {
+        Buyer buyer = buyerMapper.toBuyer(buyerUpdateRequest);
         buyersService.updateById(id, buyer);
         log.info("Обновлены данные покупателя с id {}", id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(buyerMapper.toBuyerResponse(buyer), ACCEPTED);
     }
 
 
-    public ResponseEntity<HttpStatus> assignItem(UUID id, UUID item_id) {
+    public ResponseEntity<BuyerResponse> assignItem(UUID id, UUID item_id) {
         buyersService.assignItemToBuyer(id, item_id);
         log.info("Для покупателя с id {} назначен товар с id {}", id, item_id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(new BuyerResponse());
     }
 }

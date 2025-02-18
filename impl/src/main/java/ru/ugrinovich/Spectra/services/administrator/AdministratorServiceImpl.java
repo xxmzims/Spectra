@@ -39,8 +39,9 @@ public class AdministratorServiceImpl implements AdministratorService {
     }
 
     @Override
-    public void updateById(UUID id, Administrator administrator) {
+    public Administrator updateById(UUID id, Administrator administrator) {
         administrator.setAdminId(id);
         administratorRepositoryJpa.save(administrator);
+        return administrator;
     }
 }

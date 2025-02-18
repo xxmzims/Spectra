@@ -14,5 +14,5 @@ public interface AdministratorService {
 
      void deleteById(UUID id);
 
-     void updateById(UUID id, Administrator administrator);
+     Administrator updateById(UUID id, Administrator administrator);
 }

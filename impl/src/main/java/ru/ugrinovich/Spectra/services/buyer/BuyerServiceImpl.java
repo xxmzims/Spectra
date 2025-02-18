@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import ru.ugrinovich.Spectra.entity.Buyer;
 import ru.ugrinovich.Spectra.repositories.jpa.BuyerRepositoryJpa;
+import ru.ugrinovich.Spectra.repositories.jpa.ItemRepositoryJpa;
 
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,6 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Override
     public void assignItemToBuyer(UUID id, UUID item_id) {
-        Buyer buyer = findById(id);
+        // TODO
     }
 }

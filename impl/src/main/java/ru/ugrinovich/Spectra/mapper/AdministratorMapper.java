@@ -18,9 +18,11 @@ public interface AdministratorMapper {
 
     Administrator toAdministrator(AdministratorDTO administratorDTO);
 
-    AdministratorDTO toAdministratorDTO(AdministratorCreateRequest administratorCreateRequest);
+    Administrator toAdministrator(AdministratorUpdateRequest administratorUpdateRequest);
 
-    AdministratorDTO toAdministratorDTO(AdministratorUpdateRequest administratorUpdateRequest);
+    Administrator toAdministrator(AdministratorCreateRequest administratorCreateRequest);
+
+    AdministratorResponse toAdministratorResponse(Administrator administrator);
 
     AdministratorResponse toAdministratorResponse(AdministratorDTO administratorDTO);
 }

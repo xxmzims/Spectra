@@ -1,5 +1,6 @@
 package ru.ugrinovich.Spectra.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class Buyer {
 
+    @NotNull
     @Id
     @Column(name = "buyer_id" )
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,7 +40,7 @@ public class Buyer {
     private List<Item> Items;
 
     @CreationTimestamp
-    @Column(name = "create_at")
+    @Column(name = "create_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant createAt;
 

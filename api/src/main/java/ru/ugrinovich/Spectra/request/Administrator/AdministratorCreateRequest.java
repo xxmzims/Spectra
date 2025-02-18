@@ -1,6 +1,7 @@
 package ru.ugrinovich.Spectra.request.Administrator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
@@ -13,5 +14,6 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 public class AdministratorCreateRequest {
 
     @Schema(description = "Имя администратора", requiredMode = REQUIRED)
+    @NotNull
     private String name;
 }

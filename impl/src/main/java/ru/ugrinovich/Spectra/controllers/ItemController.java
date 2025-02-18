@@ -13,11 +13,13 @@ import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemUpdateRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 import ru.ugrinovich.Spectra.services.item.ItemService;
-import ru.ugrinovich.Spectra.services.item.ItemServiceLocalImpl;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,38 +35,37 @@ public class ItemController implements ItemAPI {
         return itemMapper.toItemResponseList(items);
     }
 
-    public ResponseEntity<HttpStatus> createItem(ItemCreateRequest itemCreateRequest) {
-        ItemDTO itemDTO = itemMapper.toItemDTO(itemCreateRequest);
-        Item item = itemMapper.toItem(itemDTO);
+    public ResponseEntity<ItemResponse> createItem(ItemCreateRequest itemCreateRequest) {
+        Item item = itemMapper.toItem(itemCreateRequest);
         itemsService.save(item);
         log.info("Создан товар с id {}", item.getId());
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return new ResponseEntity<>(itemMapper.toItemResponse(item), CREATED);
     }
 
-    public ItemResponse getItem(UUID id) {
+    public ResponseEntity<ItemResponse> getItem(UUID id) {
         Item item = itemsService.getItemById(id);
         log.info("Найден товар с id {}", id);
-        return itemMapper.toItemResponse(item);
+        return ResponseEntity.ok(itemMapper.toItemResponse(item));
     }
 
-    public ResponseEntity<HttpStatus> updateItem(UUID id, ItemUpdateRequest itemUpdateRequest) {
+    public ResponseEntity<ItemResponse> updateItem(UUID id, ItemUpdateRequest itemUpdateRequest) {
         ItemDTO itemDTO = itemMapper.toItemDTO(itemUpdateRequest);
         Item item = itemMapper.toItem(itemDTO);
         itemsService.updateById(id, item);
         log.info("Обновлены данные товара с id {}", id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(itemMapper.toItemResponse(item), ACCEPTED);
     }
 
     public ResponseEntity<HttpStatus> deleteItem(UUID id) {
         itemsService.deleteById(id);
         log.info("Удален товар с id {}", id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(ACCEPTED);
     }
 
-    public ItemResponse getItem(String serialNumber) {
+    public ResponseEntity<ItemResponse> getItem(String serialNumber) {
         Item item = itemsService.findBySerialNumber(serialNumber);
 
         log.info("Найден товар с серийным номером {}" , serialNumber);
-        return itemMapper.toItemResponse(item);
+        return ResponseEntity.ok(itemMapper.toItemResponse(item));
     }
 }

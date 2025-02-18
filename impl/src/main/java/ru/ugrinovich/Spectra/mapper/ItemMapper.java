@@ -14,6 +14,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
 
+    Item toItem(ItemCreateRequest itemCreateRequest);
+
+    Item toItem(ItemUpdateRequest itemUpdateRequest);
+
     Item toItemDTO(Item item);
 
     Item toItem(ItemDTO itemDTO);
