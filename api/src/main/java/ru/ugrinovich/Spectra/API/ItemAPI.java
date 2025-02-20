@@ -81,4 +81,5 @@ public interface ItemAPI {
     })
     @GetMapping("/serial/{serialNumber}")
     ResponseEntity<ItemResponse> getItem(@PathVariable("serialNumber") @Parameter(description = "Серийный номер товара") String serialNumber);
+
 }

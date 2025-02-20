@@ -2,7 +2,7 @@ package ru.ugrinovich.Spectra.repositories.local;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.ugrinovich.Spectra.entity.Administrator;
+import ru.ugrinovich.Spectra.entities.Administrator;
 
 
 import java.util.ArrayList;

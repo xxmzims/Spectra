@@ -1,10 +1,9 @@
-package ru.ugrinovich.Spectra.mapper;
+package ru.ugrinovich.Spectra.mappers;
 
 import org.mapstruct.Mapper;
-import ru.ugrinovich.Spectra.dto.BuyerDTO;
+import org.mapstruct.factory.Mappers;
 import ru.ugrinovich.Spectra.dto.ItemDTO;
-import ru.ugrinovich.Spectra.entity.Buyer;
-import ru.ugrinovich.Spectra.entity.Item;
+import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemUpdateRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
-
+    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
     Item toItem(ItemCreateRequest itemCreateRequest);
 
     Item toItem(ItemUpdateRequest itemUpdateRequest);

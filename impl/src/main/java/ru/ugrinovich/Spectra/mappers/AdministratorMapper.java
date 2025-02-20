@@ -1,8 +1,8 @@
-package ru.ugrinovich.Spectra.mapper;
+package ru.ugrinovich.Spectra.mappers;
 
 import org.mapstruct.Mapper;
 import ru.ugrinovich.Spectra.dto.AdministratorDTO;
-import ru.ugrinovich.Spectra.entity.Administrator;
+import ru.ugrinovich.Spectra.entities.Administrator;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorCreateRequest;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorUpdateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;

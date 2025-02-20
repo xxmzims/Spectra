@@ -2,10 +2,11 @@ package ru.ugrinovich.Spectra.services.buyer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import ru.ugrinovich.Spectra.entity.Buyer;
-import ru.ugrinovich.Spectra.entity.Item;
+import ru.ugrinovich.Spectra.entities.Buyer;
+import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.repositories.local.BuyerRepositoryLocal;
 import ru.ugrinovich.Spectra.repositories.local.ItemRepositoryLocal;
 

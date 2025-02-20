@@ -1,0 +1,14 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+    <changeSet id="002-add-price-purchase-status-view-status-item.xml" author="Maksim Ugrinovitch">
+        <addColumn tableName="item">
+            <column type="decimal" name="amount" remarks="Количество товара"></column>
+            <column name="price" type="int" remarks="Цена товара"></column>
+            <column name="purchase_status" type="varchar" remarks="Статус покупки товара"></column>
+            <column name="view_status" type="varchar" remarks="Статус просмотра товара"></column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

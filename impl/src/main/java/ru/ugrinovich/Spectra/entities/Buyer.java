@@ -1,5 +1,4 @@
-package ru.ugrinovich.Spectra.entity;
-
+package ru.ugrinovich.Spectra.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -7,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,18 +14,33 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "administrator")
-public class Administrator {
+@Table(name = "buyer")
+@EqualsAndHashCode
+public class Buyer {
 
     @NotNull
     @Id
-    @Column(name="admin_id")
+    @Column(name = "buyer_id" )
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID adminId;
+    private UUID id;
 
     @NotNull
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @NotNull
+    @Column(name = "second_name")
+    private String secondName;
+
+    @NotNull
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToMany(mappedBy = "buyer")
+    private List<Item> Items;
 
     @CreationTimestamp
     @Column(name = "create_at", updatable = false)
@@ -36,4 +51,5 @@ public class Administrator {
     @Column(name = "update_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updateAt;
+
 }

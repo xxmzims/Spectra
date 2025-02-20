@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.dto.ItemDTO;
-import ru.ugrinovich.Spectra.entity.Item;
-import ru.ugrinovich.Spectra.mapper.ItemMapper;
+import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.mappers.ItemMapper;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemUpdateRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
@@ -43,7 +43,7 @@ public class ItemController implements ItemAPI {
     }
 
     public ResponseEntity<ItemResponse> getItem(UUID id) {
-        Item item = itemsService.getItemById(id);
+        Item item = itemsService.findById(id);
         log.info("Найден товар с id {}", id);
         return ResponseEntity.ok(itemMapper.toItemResponse(item));
     }

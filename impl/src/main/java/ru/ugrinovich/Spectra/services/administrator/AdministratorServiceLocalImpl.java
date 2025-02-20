@@ -4,8 +4,7 @@ package ru.ugrinovich.Spectra.services.administrator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import ru.ugrinovich.Spectra.entity.Administrator;
+import ru.ugrinovich.Spectra.entities.Administrator;
 import ru.ugrinovich.Spectra.repositories.local.AdministratorRepositoryLocal;
 
 import java.util.List;

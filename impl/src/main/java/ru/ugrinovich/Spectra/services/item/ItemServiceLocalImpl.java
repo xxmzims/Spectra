@@ -2,9 +2,13 @@ package ru.ugrinovich.Spectra.services.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import ru.ugrinovich.Spectra.entity.Item;
+import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.repositories.local.ItemRepositoryLocal;
+import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,11 +20,21 @@ public class ItemServiceLocalImpl implements ItemService{
 
     private final ItemRepositoryLocal itemRepository;
 
+    @Override
+    public Page<ItemResponse> getAllItemsWithPagination(PageRequest pageRequest) {
+        return null;
+    }
+
+    @Override
+    public List<ItemResponse> getAllItemWithSpecification(Specification<Item> specification) {
+        return null;
+    }
+
     public List<Item> getAllItems(){
         return itemRepository.findAll();
     }
 
-    public Item getItemById(UUID id){
+    public Item findById(UUID id){
         return itemRepository.findById(id).orElse(null);
     }
 

@@ -1,6 +1,9 @@
 package ru.ugrinovich.Spectra.services.buyer;
 
-import ru.ugrinovich.Spectra.entity.Buyer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import ru.ugrinovich.Spectra.entities.Buyer;
+import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
 
 import java.util.List;
 import java.util.UUID;

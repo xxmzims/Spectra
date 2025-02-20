@@ -1,4 +1,4 @@
-package ru.ugrinovich.Spectra.entity;
+package ru.ugrinovich.Spectra.entities;
 
 
 import jakarta.persistence.*;
@@ -37,7 +37,22 @@ public class Item {
 
     @NotNull
     @Column(name = "category")
+    @Enumerated(EnumType.STRING)
     private ItemType category;
+
+    @Column(name = "purchase_status")
+    @Enumerated(EnumType.STRING)
+    private ItemPurchaseStatus purchaseStatus;
+
+    @Column(name="view_status")
+    @Enumerated(EnumType.STRING)
+    private ItemViewStatus itemViewStatus;
+
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "amount")
+    private int amount;
 
     @CreationTimestamp
     @Column(name = "create_at", updatable = false)

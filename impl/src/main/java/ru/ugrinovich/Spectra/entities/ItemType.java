@@ -1,4 +1,4 @@
-package ru.ugrinovich.Spectra.entity;
+package ru.ugrinovich.Spectra.entities;
 
 public enum ItemType {
     PHONE,

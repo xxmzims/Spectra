@@ -6,5 +6,6 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
 
     <include file="001-create_tables_admin_buyer_item.xml" relativeToChangelogFile="true"/>
-
+    <include file="002-add-price-purchase-status-view-status-item.xml" relativeToChangelogFile="true"/>
+    <include file="003-change-type-amount-price-item.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

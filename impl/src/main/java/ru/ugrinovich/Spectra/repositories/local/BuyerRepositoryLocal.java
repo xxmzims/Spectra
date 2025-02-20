@@ -1,13 +1,16 @@
 package ru.ugrinovich.Spectra.repositories.local;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import ru.ugrinovich.Spectra.entity.Buyer;
-import ru.ugrinovich.Spectra.entity.Item;
+import ru.ugrinovich.Spectra.entities.Buyer;
+import ru.ugrinovich.Spectra.entities.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class BuyerRepositoryLocal {

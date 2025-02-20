@@ -2,7 +2,7 @@ package ru.ugrinovich.Spectra.repositories.local;
 
 
 import org.springframework.stereotype.Component;
-import ru.ugrinovich.Spectra.entity.Item;
+import ru.ugrinovich.Spectra.entities.Item;
 
 import java.util.ArrayList;
 import java.util.List;

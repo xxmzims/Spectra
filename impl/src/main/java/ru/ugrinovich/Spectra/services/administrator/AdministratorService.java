@@ -1,6 +1,6 @@
 package ru.ugrinovich.Spectra.services.administrator;
 
-import ru.ugrinovich.Spectra.entity.Administrator;
+import ru.ugrinovich.Spectra.entities.Administrator;
 
 import java.util.List;
 import java.util.UUID;
