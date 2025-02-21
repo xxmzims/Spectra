@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.ugrinovich.Spectra.request.Item.ItemPurchaseStatus;
+import ru.ugrinovich.Spectra.request.Item.ItemType;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -43,10 +45,6 @@ public class Item {
     @Column(name = "purchase_status")
     @Enumerated(EnumType.STRING)
     private ItemPurchaseStatus purchaseStatus;
-
-    @Column(name="view_status")
-    @Enumerated(EnumType.STRING)
-    private ItemViewStatus itemViewStatus;
 
     @Column(name = "price")
     private double price;

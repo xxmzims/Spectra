@@ -2,8 +2,6 @@ package ru.ugrinovich.Spectra.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import ru.ugrinovich.Spectra.API.BuyerAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,16 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.entities.Buyer;
 import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.mappers.BuyerMapper;
+import ru.ugrinovich.Spectra.mappers.ItemMapper;
 import ru.ugrinovich.Spectra.request.Buyer.BuyerCreateRequest;
 import ru.ugrinovich.Spectra.request.Buyer.BuyerUpdateRequest;
+import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
+import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
+import ru.ugrinovich.Spectra.request.Item.*;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
-import ru.ugrinovich.Spectra.response.Item.ItemPurchaseStatus;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
-import ru.ugrinovich.Spectra.response.Item.ItemType;
-import ru.ugrinovich.Spectra.response.Item.ItemViewStatus;
 import ru.ugrinovich.Spectra.services.buyer.BuyerService;
 import ru.ugrinovich.Spectra.services.item.ItemService;
-import ru.ugrinovich.Spectra.specification.ItemSpecification;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,9 +33,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Slf4j
 public class BuyerController implements BuyerAPI {
 
-    private final ItemSpecification itemSpecification;
     private final BuyerService buyersService;
     private final ItemService itemService;
+    private final ItemMapper itemMapper;
     private final BuyerMapper buyerMapper;
 
     public ResponseEntity<List<BuyerResponse>> findAllBuyers() {
@@ -48,29 +46,23 @@ public class BuyerController implements BuyerAPI {
     }
 
     @Override
-    public ResponseEntity<Page<ItemResponse>> getItems(Integer offset, Integer limit) {
-        Page<ItemResponse> items = itemService.getAllItemsWithPagination(PageRequest.of(offset, limit));
-        log.info("Найдены товары на странице {} с серийными номерами {}", offset, items.stream().map(ItemResponse::getSerialNumber).collect(Collectors.toList()));
-        return ResponseEntity.ok(items);
+    public ResponseEntity<HttpStatus> addItemToPurchaseList(ForAddItemToPurchaseListRequest request) {
+        buyersService.addItemToPurchaseList(request);
+        log.info("Товар с id {}, статусом {} добавлен в список покупок Покупателю с id {}", request.getItemId(), request.getItemPurchaseStatus(), request.getBuyerId());
+        return ResponseEntity.ok(ACCEPTED);
     }
 
     @Override
-    public ResponseEntity<List<ItemResponse>> searchItems(ItemType category,
-                                                          ItemViewStatus viewStatus,
-                                                          ItemPurchaseStatus itemPurchaseStatus,
-                                                          Integer amount,
-                                                          Double startPrice,
-                                                          Double endPrice) {
+    public ResponseEntity<Page<ItemResponse>> getItems(ItemFilterRequest itemFilterRequest) {
+        Page<ItemResponse> itemResponses = itemService.getAllItemWithSpecAndPag(itemFilterRequest);
+        log.info("Найдены товары с серийными номерами {}", itemResponses.stream().map(ItemResponse::getSerialNumber).collect(Collectors.toList()));
+        return ResponseEntity.ok(itemResponses);
+    }
 
-        Specification<Item> spec = Specification.where(null);
-        if (category != null) spec = spec.and(itemSpecification.hasCategory(category));
-        if (viewStatus != null) spec = spec.and(itemSpecification.hasStatusView(viewStatus));
-        if (itemPurchaseStatus != null) spec = spec.and(itemSpecification.hasStatusPurchase(itemPurchaseStatus));
-        if (amount != null) spec = spec.and(itemSpecification.hasMinAmount(amount));
-        if(startPrice != null && endPrice == null) spec = spec.and(itemSpecification.hasStartPrice(startPrice));
-        if(endPrice != null && startPrice == null) spec = spec.and(itemSpecification.hasEndPrice(endPrice));
-        if (endPrice != null && startPrice != null) spec = spec.and(itemSpecification.hasEndPriceAndStartPrice(startPrice, endPrice));
-            return ResponseEntity.ok(itemService.getAllItemWithSpecification(spec));
+    public ResponseEntity<ItemResponse> getItem(UUID id) {
+        Item item = itemService.findById(id);
+        log.info("Найден товар для покупателя с id {}", id);
+        return ResponseEntity.ok(itemMapper.toItemResponse(item));
     }
 
     public ResponseEntity<BuyerResponse> createBuyer(BuyerCreateRequest buyerCreateRequest) {
@@ -100,10 +92,13 @@ public class BuyerController implements BuyerAPI {
         return new ResponseEntity<>(buyerMapper.toBuyerResponse(buyer), ACCEPTED);
     }
 
+    @Override
+    public ResponseEntity<List<ItemResponse>> getHistoryOfPleasures(ForGetHistoryOfPurchaseRequest request) {
 
-    public ResponseEntity<BuyerResponse> assignItem(UUID id, UUID item_id) {
-        buyersService.assignItemToBuyer(id, item_id);
-        log.info("Для покупателя с id {} назначен товар с id {}", id, item_id);
-        return ResponseEntity.ok(new BuyerResponse());
+        List<Item> items = buyersService.findHistoryOfPurchases(request);
+
+        log.info("Найдены товары {} cо статусом {} в истории покупателя с id {}", items.stream().map(Item::getId).collect(Collectors.toList()), request.getItemPurchaseStatus(), request.getBuyerId());
+
+        return ResponseEntity.ok(itemMapper.toItemResponseList(items));
     }
 }

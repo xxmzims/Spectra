@@ -1,12 +1,11 @@
 package ru.ugrinovich.Spectra.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.ugrinovich.Spectra.entities.Buyer;
-import ru.ugrinovich.Spectra.entities.ItemType;
+import ru.ugrinovich.Spectra.request.Item.ItemType;
 
 
 @Data

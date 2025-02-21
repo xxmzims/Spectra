@@ -7,8 +7,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.ugrinovich.Spectra.entities.Buyer;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
 import ru.ugrinovich.Spectra.repositories.local.BuyerRepositoryLocal;
 import ru.ugrinovich.Spectra.repositories.local.ItemRepositoryLocal;
+import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
+import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,9 +45,11 @@ public class BuyerServiceLocalImpl implements BuyerService {
         buyerRepository.updateById(id, buyer);
     }
 
-    public void assignItemToBuyer(UUID id, UUID item_id) {
-        Optional<Item> optionalItem = itemRepository.findById(item_id);
-        optionalItem.ifPresent(item -> buyerRepository.assignItemByBuyerId(id, item));
-
+    @Override
+    public void addItemToPurchaseList(ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest) throws ItemOutOfStockException {
+    }
+    @Override
+    public List<Item> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request) {
+        return List.of();
     }
 }

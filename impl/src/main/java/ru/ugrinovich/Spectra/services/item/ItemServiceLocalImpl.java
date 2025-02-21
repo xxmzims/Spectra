@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.repositories.local.ItemRepositoryLocal;
+import ru.ugrinovich.Spectra.request.Item.ItemFilterRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
@@ -21,12 +22,7 @@ public class ItemServiceLocalImpl implements ItemService{
     private final ItemRepositoryLocal itemRepository;
 
     @Override
-    public Page<ItemResponse> getAllItemsWithPagination(PageRequest pageRequest) {
-        return null;
-    }
-
-    @Override
-    public List<ItemResponse> getAllItemWithSpecification(Specification<Item> specification) {
+    public Page<ItemResponse> getAllItemWithSpecAndPag(ItemFilterRequest itemFilterRequest) {
         return null;
     }
 

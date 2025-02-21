@@ -4,12 +4,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorCreateRequest;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorUpdateRequest;
+import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +22,15 @@ import java.util.UUID;
 )
 @RequestMapping("/api/v1/administrators")
 public interface AdministratorAPI {
+    @Operation(summary = "Создание нового товара")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("items/new")
+    ResponseEntity<ItemResponse> createItem(@RequestBody @Valid ItemCreateRequest item);
 
     @Operation(summary = "Получение данных всех администраторов")
     @ApiResponses(value = {

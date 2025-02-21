@@ -1,5 +1,6 @@
 package ru.ugrinovich.Spectra.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -7,8 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.ugrinovich.Spectra.exceptions.is_already_exist.EmailAdressIsAlreadyExistException;
+import ru.ugrinovich.Spectra.exceptions.is_already_exist.SerialNumberIsAlreadyExistException;
 import ru.ugrinovich.Spectra.exceptions.not_found.ItemNotFoundBySerialNumberException;
 import ru.ugrinovich.Spectra.exceptions.not_found.NotFoundException;
+import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
 import ru.ugrinovich.Spectra.exceptions.violations.ErrorMessage;
 import ru.ugrinovich.Spectra.exceptions.violations.ValidationErrorResponse;
 import ru.ugrinovich.Spectra.exceptions.violations.Violation;
@@ -47,6 +50,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAdressIsAlreadyExistException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage onEmailAdressIsAlreadyExistException(EmailAdressIsAlreadyExistException ex) {
+        log.error(ex.getMessage());
+        return new ErrorMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(SerialNumberIsAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage onSerialNumberIsAlreadyExistException(SerialNumberIsAlreadyExistException ex) {
+        log.error(ex.getMessage());
+        return new ErrorMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorResponse onConstraintViolationException(ConstraintViolationException ex){
+        log.error(ex.getMessage());
+        final List<Violation> violations = ex.getConstraintViolations()
+                .stream().map(error -> new Violation(error.getPropertyPath().toString(), error.getMessage())).collect(Collectors.toList());
+        return new ValidationErrorResponse(violations);
+    }
+
+    @ExceptionHandler(ItemOutOfStockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage onItemOutOfStockException(ItemOutOfStockException ex) {
         log.error(ex.getMessage());
         return new ErrorMessage(ex.getMessage());
     }

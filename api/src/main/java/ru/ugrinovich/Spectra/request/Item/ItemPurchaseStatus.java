@@ -1,4 +1,4 @@
-package ru.ugrinovich.Spectra.entities;
+package ru.ugrinovich.Spectra.request.Item;
 
 public enum ItemPurchaseStatus {
     IN_BUCKET,

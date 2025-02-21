@@ -1,9 +1,10 @@
 package ru.ugrinovich.Spectra.services.buyer;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import ru.ugrinovich.Spectra.entities.Buyer;
-import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
+import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
+import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
+import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,5 +21,7 @@ public interface BuyerService {
 
     void updateById(UUID id, Buyer buyer);
 
-    void assignItemToBuyer(UUID id, UUID item_id);
+    void addItemToPurchaseList(ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest) throws ItemOutOfStockException;
+
+    List<Item> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request);
 }
