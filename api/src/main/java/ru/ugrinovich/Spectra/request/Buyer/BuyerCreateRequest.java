@@ -14,7 +14,6 @@ import static ru.ugrinovich.Spectra.validation.util.MessageValidationUtil.*;
 @Data
 @AllArgsConstructor
 @Builder
-
 @Schema(description = "Данные покупателя для создания")
 public class BuyerCreateRequest {
 
@@ -29,7 +28,7 @@ public class BuyerCreateRequest {
     private String secondName;
 
     @Schema(description = "Возраст", requiredMode = REQUIRED, example = "18")
-    @NotBlank
+    @NotNull
     @Min(value = 0, message = ERROR_MESSAGE_FOR_MIN_MAX_AGE)
     @Max(value = 200, message = ERROR_MESSAGE_FOR_MIN_MAX_AGE)
     private int age;

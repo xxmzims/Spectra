@@ -19,6 +19,7 @@ import static ru.ugrinovich.Spectra.validation.util.MessageValidationUtil.ERROR_
 @AllArgsConstructor
 @Builder
 @Schema(description = "Данные для создания товара")
+
 public class ItemCreateRequest {
 
     @Schema(description = "Наименование товара", requiredMode = REQUIRED)
