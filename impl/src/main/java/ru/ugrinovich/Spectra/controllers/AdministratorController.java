@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.API.AdministratorAPI;
 import ru.ugrinovich.Spectra.entities.Administrator;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.mappers.AdministratorMapper;
 import ru.ugrinovich.Spectra.mappers.ItemMapper;
+import ru.ugrinovich.Spectra.mappers.PurchaseHistoryMapper;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorCreateRequest;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorUpdateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
+import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 import ru.ugrinovich.Spectra.services.administrator.AdministratorService;
 import ru.ugrinovich.Spectra.services.item.ItemService;
@@ -32,6 +36,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class AdministratorController implements AdministratorAPI {
 
     private final AdministratorMapper administratorMapper;
+    private final PurchaseHistoryMapper purchaseHistoryMapper;
     private final ItemService itemService;
     private final ItemMapper itemMapper;
     private final AdministratorService administratorsService;
@@ -44,11 +49,35 @@ public class AdministratorController implements AdministratorAPI {
     }
 
     @Override
+    public ResponseEntity<List<ItemResponse>> batchAddItems(List<ItemCreateRequest> items) {
+        List<Item> itemsAdding = itemMapper.toItem(items);
+        log.info("Создано {} товаров с id {}", itemsAdding.size(), itemsAdding.stream().map(item -> item.getId()).collect(Collectors.toList()));
+        itemService.save(itemsAdding);
+
+        return ResponseEntity.ok(itemMapper.toItemResponseList(itemsAdding));
+    }
+
+    @Override
+    public ResponseEntity<List<ItemRemainingResponse>> getRemainingItems() {
+         List<ItemRemainingResponse> remainingResponses =  itemMapper.toRemainingResponse(itemService.getAllItems());
+         remainingResponses.forEach(x -> x.setTotalPrice(x.getPrice() * x.getAmount()));
+
+         return ResponseEntity.ok(remainingResponses);
+    }
+
+    @Override
     public ResponseEntity<ItemResponse> createItem(ItemCreateRequest itemCreateRequest) {
         Item item = itemMapper.toItem(itemCreateRequest);
         itemService.save(item);
         log.info("Создан товар с id {}" ,item.getId());
         return ResponseEntity.ok(itemMapper.toItemResponse(item));
+    }
+
+    @Override
+    public ResponseEntity<List<ForAdminOfferResponse>> findAllOffers() {
+        List<ItemPurchase> itemPurchases = itemService.getAllOffers();
+        log.info("Получены все оферы");
+        return ResponseEntity.ok(purchaseHistoryMapper.toAdminOfferResponse(itemPurchases));
     }
 
     public ResponseEntity<AdministratorResponse> createAdministrator(AdministratorCreateRequest administratorCreateRequest) {

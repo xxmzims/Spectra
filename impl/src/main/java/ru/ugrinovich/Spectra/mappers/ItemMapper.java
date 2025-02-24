@@ -6,6 +6,8 @@ import ru.ugrinovich.Spectra.dto.ItemDTO;
 import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemUpdateRequest;
+import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
@@ -14,7 +16,11 @@ import java.util.List;
 public interface ItemMapper {
     ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
+    List<ItemRemainingResponse> toRemainingResponse(List<Item> items);
+
     Item toItem(ItemCreateRequest itemCreateRequest);
+
+    List<Item> toItem(List<ItemCreateRequest> itemCreateRequestList);
 
     Item toItem(ItemUpdateRequest itemUpdateRequest);
 

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.ugrinovich.Spectra.request.Item.ItemPurchaseStatus;
 
 import java.util.UUID;
 
@@ -19,7 +18,5 @@ public class ForGetHistoryOfPurchaseRequest {
     @NotNull
     private UUID buyerId;
 
-    @NotNull
-    @Schema(description = "Статус покупки товара")
-    private ItemPurchaseStatus itemPurchaseStatus;
+
 }

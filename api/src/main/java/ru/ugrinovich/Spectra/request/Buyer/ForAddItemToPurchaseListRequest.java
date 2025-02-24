@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.ugrinovich.Spectra.request.Item.ItemPurchaseStatus;
 import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 
 import java.util.UUID;
@@ -25,7 +24,10 @@ public class ForAddItemToPurchaseListRequest {
     private UUID itemId;
 
     @NotNull
-    @Schema(description = "Тип запроса(Заказан, В корзине, Куплен)")
-    @EnumValidate(enumClass = ItemPurchaseStatus.class, message = "Неверный тип запроса")
-    private ItemPurchaseStatus itemPurchaseStatus;
+    @Schema(description = "Цена единицы товара")
+    private Double price;
+
+    @NotNull
+    @Schema(description = "Количество добавляемого товара")
+    private int quantity;
 }

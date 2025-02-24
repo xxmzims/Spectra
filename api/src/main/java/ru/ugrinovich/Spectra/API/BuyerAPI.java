@@ -17,6 +17,7 @@ import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 import ru.ugrinovich.Spectra.request.Item.*;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemPurchaseHistoryResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
@@ -28,6 +29,9 @@ import java.util.UUID;
 )
 @RequestMapping("/api/v1/buyers")
 public interface BuyerAPI {
+
+
+
     @Operation(summary = "Запрос на добавление в список покупок товара")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
@@ -36,7 +40,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
 
-    @PostMapping("/items/add_to_purchase_list")
+    @PostMapping("/items/to_purchase_list")
     ResponseEntity<HttpStatus> addItemToPurchaseList(@RequestBody @Valid ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest);
 
     @Operation(summary = "Получение данных всех покупателей")
@@ -109,13 +113,13 @@ public interface BuyerAPI {
     @PatchMapping("/{buyerId}/update")
     ResponseEntity<BuyerResponse> updateBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId, @RequestBody @Valid BuyerUpdateRequest buyer);
 
-    @Operation(summary = "Получения списка покупок в зависимости от статуса покупки")
+    @Operation(summary = "Получения списка покупок покупателя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "404", description = "Not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PatchMapping("/get_history_of_pleasures")
-    ResponseEntity<List<ItemResponse>> getHistoryOfPleasures(@RequestBody ForGetHistoryOfPurchaseRequest request);
+    @PostMapping("/get_history_of_pleasures")
+    ResponseEntity<List<ItemPurchaseHistoryResponse>> getHistoryOfPleasures(@RequestBody @Valid ForGetHistoryOfPurchaseRequest request);
 }

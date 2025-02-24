@@ -1,0 +1,55 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.19.xsd">
+
+<changeSet id="1" author="Maksim Ugrinovitch">
+    <createTable tableName="purchase_history">
+        <column name="purchase_id" type="UUID">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="buyer_id" type="UUID" remarks="Идентификатор покупателя">
+            <constraints nullable="false"/>
+        </column>
+        <column name="item_id" type="UUID" remarks="Идентификатор товара">
+            <constraints nullable="false"/>
+        </column>
+        <column name="purchase_date" type="TIMESTAMP" remarks="Дата добавления покупки">
+            <constraints nullable="false"/>
+        </column>
+        <column name="quantity" type="INT" remarks="Количество">
+            <constraints nullable="false"/>
+        </column>
+        <column name="total_price" type="DECIMAL(10, 2)" remarks="Конечная цена">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+
+    <!-- Добавление внешних ключей -->
+    <addForeignKeyConstraint baseTableName="purchase_history"
+                             baseColumnNames="buyer_id"
+                             constraintName="fk_purchase_history_buyer"
+                             referencedTableName="buyer"
+                             referencedColumnNames="buyer_id"
+                             onDelete="CASCADE"
+                             onUpdate="CASCADE"/>
+
+    <addForeignKeyConstraint baseTableName="purchase_history"
+                             baseColumnNames="item_id"
+                             constraintName="fk_purchase_history_item"
+                             referencedTableName="item"
+                             referencedColumnNames="item_id"
+                             onDelete="CASCADE"
+                             onUpdate="CASCADE"/>
+
+    <!-- Добавление индексов для улучшения производительности -->
+    <createIndex tableName="purchase_history" indexName="idx_purchase_history_buyer_id">
+        <column name="buyer_id"/>
+    </createIndex>
+
+    <createIndex tableName="purchase_history" indexName="idx_purchase_history_item_id">
+        <column name="item_id"/>
+    </createIndex>
+</changeSet>
+        </databaseChangeLog>

@@ -76,4 +76,5 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage());
         return new ErrorMessage(ex.getMessage());
     }
+
 }

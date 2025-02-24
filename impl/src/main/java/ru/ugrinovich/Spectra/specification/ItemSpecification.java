@@ -11,6 +11,9 @@ import java.util.Optional;
 @Component
 public class ItemSpecification {
 
+    public Specification<Item> categorySpec(ItemFilterRequest filterRequest){
+        return Specification.where(null);
+    }
 
     public static Specification<Item> hasCategory(ItemType category){
         return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category"), category));
@@ -26,27 +29,19 @@ public class ItemSpecification {
     public static Specification<Item> hasEndPrice(Double endPrice){
         return ((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), endPrice));
     }
-    public static Specification<Item> hasEndPriceAndStartPrice(Double endPrice, Double startPrice){
-        return ((root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("price"), endPrice, startPrice));
-    }
 
 
 
     public Specification<Item> toSpecForAllItems(ItemFilterRequest filter){
 
-        Specification<Item> spec = Specification.where(null);
-        if (filter.getCategory() != null)
-            spec = spec.and(hasCategory(filter.getCategory()));
-        if (filter.getAmount() != null)
-            spec = spec.and(hasMinAmount(filter.getAmount()));
-        if(filter.getStartPrice() != null && filter.getEndPrice() == null)
-            spec = spec.and(hasStartPrice(filter.getStartPrice()));
-        if(filter.getEndPrice() != null && filter.getStartPrice() == null)
-            spec = spec.and(hasEndPrice(filter.getEndPrice()));
-        if (filter.getStartPrice() != null && filter.getEndPrice() != null)
-            spec = spec.and(hasEndPriceAndStartPrice(filter.getStartPrice(), filter.getEndPrice()));
+        return Optional.ofNullable(filter)
+                .map(this::categorySpec)
+                .map(spec -> spec.and(getFilterCategory(filter)))
+                .map(spec -> spec.and(getFilterAmount(filter)))
+                .map(spec -> spec.and(getFilterStartPrice(filter)))
+                .map(spec -> spec.and(getFilterEndPrice(filter)))
+                .orElse(categorySpec(filter));
 
-        return spec;
     }
 
     private static Specification<Item> getFilterCategory(ItemFilterRequest filter){
@@ -56,4 +51,23 @@ public class ItemSpecification {
                 .orElse(null);
     }
 
+    private static Specification<Item> getFilterAmount(ItemFilterRequest filter){
+        return Optional.ofNullable(filter)
+                .map(ItemFilterRequest::getAmount)
+                .map(ItemSpecification::hasMinAmount)
+                .orElse(null);
+    }
+
+    private static Specification<Item> getFilterStartPrice(ItemFilterRequest filter){
+        return Optional.ofNullable(filter)
+                .map(ItemFilterRequest::getStartPrice)
+                .map(ItemSpecification::hasStartPrice)
+                .orElse(null);
+    }
+    public static Specification<Item> getFilterEndPrice(ItemFilterRequest filter){
+        return Optional.ofNullable(filter)
+                .map(ItemFilterRequest::getEndPrice)
+                .map(ItemSpecification::hasEndPrice)
+                .orElse(null);
+    }
 }

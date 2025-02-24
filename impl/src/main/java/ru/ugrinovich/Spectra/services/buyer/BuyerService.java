@@ -1,7 +1,7 @@
 package ru.ugrinovich.Spectra.services.buyer;
 
 import ru.ugrinovich.Spectra.entities.Buyer;
-import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
@@ -23,5 +23,5 @@ public interface BuyerService {
 
     void addItemToPurchaseList(ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest) throws ItemOutOfStockException;
 
-    List<Item> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request);
+    List<ItemPurchase> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request);
 }

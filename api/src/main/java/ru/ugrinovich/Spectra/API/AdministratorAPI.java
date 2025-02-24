@@ -12,6 +12,8 @@ import ru.ugrinovich.Spectra.request.Administrator.AdministratorCreateRequest;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorUpdateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
+import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
@@ -22,6 +24,27 @@ import java.util.UUID;
 )
 @RequestMapping("/api/v1/administrators")
 public interface AdministratorAPI {
+
+    @Operation(summary = "Получение остатка по товарам")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("items/remaining")
+    ResponseEntity<List<ItemRemainingResponse>> getRemainingItems();
+
+    @Operation(summary = "Массовое добавление товаров.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("items/batch-add")
+    ResponseEntity<List<ItemResponse>> batchAddItems(@RequestBody @Valid List<ItemCreateRequest> items);
+
     @Operation(summary = "Создание нового товара")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
@@ -31,6 +54,16 @@ public interface AdministratorAPI {
     })
     @PostMapping("items/new")
     ResponseEntity<ItemResponse> createItem(@RequestBody @Valid ItemCreateRequest item);
+
+    @Operation(summary = "Получение всех оферов")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("items/offers")
+    ResponseEntity<List<ForAdminOfferResponse>> findAllOffers();
 
     @Operation(summary = "Получение данных всех администраторов")
     @ApiResponses(value = {

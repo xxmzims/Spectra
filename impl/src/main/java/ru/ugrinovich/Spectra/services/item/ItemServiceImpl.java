@@ -10,11 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.exceptions.is_already_exist.SerialNumberIsAlreadyExistException;
 import ru.ugrinovich.Spectra.exceptions.not_found.ItemNotFoundBySerialNumberException;
 import ru.ugrinovich.Spectra.exceptions.not_found.ItemNotFoundException;
 import ru.ugrinovich.Spectra.mappers.ItemMapper;
 import ru.ugrinovich.Spectra.repositories.jpa.ItemRepositoryJpa;
+import ru.ugrinovich.Spectra.repositories.jpa.PurchaseHistoryJpa;
 import ru.ugrinovich.Spectra.request.Item.ItemFilterRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 import ru.ugrinovich.Spectra.specification.ItemSpecification;
@@ -33,6 +35,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemMapper itemMapper;
     private final ItemRepositoryJpa itemRepositoryJpa;
     private final ItemSpecification itemSpecification;
+    private final PurchaseHistoryJpa purchaseHistoryJpa;
 
     @Override
     public List<Item> getAllItems() {
@@ -57,6 +60,15 @@ public class ItemServiceImpl implements ItemService {
         return itemRepositoryJpa.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
     }
 
+    public List<ItemPurchase> getAllOffers(){
+        return purchaseHistoryJpa.findAll();
+    }
+
+    @Override
+    public void save(List<Item> items) {
+        itemRepositoryJpa.saveAll(items);
+    }
+
     @Override
     public void deleteById(UUID id) {
         findById(id);
@@ -70,6 +82,7 @@ public class ItemServiceImpl implements ItemService {
             findBySerialNumber(serialNumber);
         }catch (ItemNotFoundBySerialNumberException ex){
             itemRepositoryJpa.save(item);
+            return;
         }
         throw new SerialNumberIsAlreadyExistException(serialNumber);
     }

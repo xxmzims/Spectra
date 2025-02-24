@@ -3,10 +3,9 @@ package ru.ugrinovich.Spectra.services.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.repositories.local.ItemRepositoryLocal;
 import ru.ugrinovich.Spectra.request.Item.ItemFilterRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
@@ -23,6 +22,16 @@ public class ItemServiceLocalImpl implements ItemService{
 
     @Override
     public Page<ItemResponse> getAllItemWithSpecAndPag(ItemFilterRequest itemFilterRequest) {
+        return null;
+    }
+
+    @Override
+    public void save(List<Item> items) {
+
+    }
+
+    @Override
+    public List<ItemPurchase> getAllOffers() {
         return null;
     }
 

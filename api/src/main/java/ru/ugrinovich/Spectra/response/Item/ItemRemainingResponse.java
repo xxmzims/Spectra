@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.ugrinovich.Spectra.request.Item.ItemType;
 
 import java.util.UUID;
 
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class ItemResponse {
+public class ItemRemainingResponse {
 
     private UUID id;
 
@@ -20,12 +19,10 @@ public class ItemResponse {
 
     private String serialNumber;
 
-    private String description;
-
-    private ItemType category;
-
-    private double price;
-
     private int amount;
+
+    private int price;
+
+    private int totalPrice;
 
 }

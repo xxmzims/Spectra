@@ -2,6 +2,7 @@ package ru.ugrinovich.Spectra.services.item;
 
 import org.springframework.data.domain.Page;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.request.Item.ItemFilterRequest;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
@@ -10,6 +11,9 @@ import java.util.UUID;
 
 public interface ItemService {
 
+    List<ItemPurchase> getAllOffers();
+
+    void save(List<Item> items);
 
     Page<ItemResponse> getAllItemWithSpecAndPag(ItemFilterRequest itemFilterRequest);
 

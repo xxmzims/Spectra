@@ -9,4 +9,5 @@
     <include file="002-add-price-purchase-status-view-status-item.xml" relativeToChangelogFile="true"/>
     <include file="003-change-type-amount-price-item.xml" relativeToChangelogFile="true"/>
     <include file="004-drop-column-view-status-item.xml" relativeToChangelogFile="true"/>
+    <include file="005-add-purchase-history.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

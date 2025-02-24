@@ -2,19 +2,15 @@ package ru.ugrinovich.Spectra.services.buyer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import ru.ugrinovich.Spectra.entities.Buyer;
-import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
 import ru.ugrinovich.Spectra.repositories.local.BuyerRepositoryLocal;
-import ru.ugrinovich.Spectra.repositories.local.ItemRepositoryLocal;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -22,7 +18,6 @@ import java.util.UUID;
 @ConditionalOnProperty(name = "app.in-memory-model.enabled", havingValue = "true")
 public class BuyerServiceLocalImpl implements BuyerService {
 
-    private final ItemRepositoryLocal itemRepository;
     private final BuyerRepositoryLocal buyerRepository;
 
     public List<Buyer> findAllBuyers() {
@@ -49,7 +44,7 @@ public class BuyerServiceLocalImpl implements BuyerService {
     public void addItemToPurchaseList(ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest) throws ItemOutOfStockException {
     }
     @Override
-    public List<Item> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request) {
-        return List.of();
+    public List<ItemPurchase> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request) {
+        return null;
     }
 }

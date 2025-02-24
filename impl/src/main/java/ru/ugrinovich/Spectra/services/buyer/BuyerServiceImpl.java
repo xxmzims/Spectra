@@ -6,19 +6,19 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import ru.ugrinovich.Spectra.entities.Buyer;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.exceptions.is_already_exist.EmailAdressIsAlreadyExistException;
 import ru.ugrinovich.Spectra.exceptions.not_found.BuyerNotFoundException;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.DontHaveAnyItemsException;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
 import ru.ugrinovich.Spectra.repositories.jpa.BuyerRepositoryJpa;
+import ru.ugrinovich.Spectra.repositories.jpa.PurchaseHistoryJpa;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
-import ru.ugrinovich.Spectra.request.Item.ItemPurchaseStatus;
 import ru.ugrinovich.Spectra.services.item.ItemService;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class BuyerServiceImpl implements BuyerService {
 
     private final ItemService itemService;
     private final BuyerRepositoryJpa buyerRepositoryJpa;
+    private final PurchaseHistoryJpa purchaseHistoryJpa;
 
     @Override
     public List<Buyer> findAllBuyers() {
@@ -64,14 +65,17 @@ public class BuyerServiceImpl implements BuyerService {
         Buyer buyer = findById(request.getBuyerId());
         Item item = itemService.findById(request.getItemId());
         Integer amount = item.getAmount();
-        if (request.getItemPurchaseStatus().equals(ItemPurchaseStatus.BOUGHT)) {
-            if (amount.equals(0)) {
-                throw new ItemOutOfStockException("Товара нет в наличии ");
-            }
-            item.setAmount(amount - 1);
+        if (amount.equals(0)) {
+            throw new ItemOutOfStockException("Товара нет в наличии. Количество оставшегося товара: " + amount);
         }
-        item.setPurchaseStatus(request.getItemPurchaseStatus());
-        item.setBuyer(buyer);
+        item.setAmount(amount - request.getQuantity());
+        ItemPurchase itemPurchase = ItemPurchase.builder()
+                .buyer(buyer)
+                .item(item)
+                .quantity(request.getQuantity())
+                .totalPrice((request.getPrice()) * request.getQuantity())
+                .build();
+        purchaseHistoryJpa.save(itemPurchase);
     }
 
     public void checkExistEmail(String email) {
@@ -81,13 +85,7 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public List<Item> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request) {
-        Buyer buyer = findById(request.getBuyerId());
-        List<Item> items = buyer.getItems();
-        if(items != null)
-            return items.stream().filter(x -> x.getPurchaseStatus().equals(request.getItemPurchaseStatus())).collect(Collectors.toList());
-        else
-            throw new DontHaveAnyItemsException("У этого пользователя нет товаров");
-
+    public List<ItemPurchase> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request) {
+        return purchaseHistoryJpa.findByBuyer(findById(request.getBuyerId())).orElseThrow(() -> new DontHaveAnyItemsException("У пользователя нет товаров"));
     }
 }

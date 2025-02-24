@@ -9,14 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.entities.Buyer;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.mappers.BuyerMapper;
 import ru.ugrinovich.Spectra.mappers.ItemMapper;
+import ru.ugrinovich.Spectra.mappers.PurchaseHistoryMapper;
 import ru.ugrinovich.Spectra.request.Buyer.BuyerCreateRequest;
 import ru.ugrinovich.Spectra.request.Buyer.BuyerUpdateRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 import ru.ugrinovich.Spectra.request.Item.*;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemPurchaseHistoryResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 import ru.ugrinovich.Spectra.services.buyer.BuyerService;
 import ru.ugrinovich.Spectra.services.item.ItemService;
@@ -37,6 +40,7 @@ public class BuyerController implements BuyerAPI {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
     private final BuyerMapper buyerMapper;
+    private final PurchaseHistoryMapper purchaseHistoryMapper;
 
     public ResponseEntity<List<BuyerResponse>> findAllBuyers() {
         List<Buyer> buyers = buyersService.findAllBuyers();
@@ -48,7 +52,7 @@ public class BuyerController implements BuyerAPI {
     @Override
     public ResponseEntity<HttpStatus> addItemToPurchaseList(ForAddItemToPurchaseListRequest request) {
         buyersService.addItemToPurchaseList(request);
-        log.info("Товар с id {}, статусом {} добавлен в список покупок Покупателю с id {}", request.getItemId(), request.getItemPurchaseStatus(), request.getBuyerId());
+        log.info("Товар с id {} добавлен в список покупок Покупателю с id {}", request.getItemId(), request.getBuyerId());
         return ResponseEntity.ok(ACCEPTED);
     }
 
@@ -93,12 +97,11 @@ public class BuyerController implements BuyerAPI {
     }
 
     @Override
-    public ResponseEntity<List<ItemResponse>> getHistoryOfPleasures(ForGetHistoryOfPurchaseRequest request) {
+    public ResponseEntity<List<ItemPurchaseHistoryResponse>> getHistoryOfPleasures(ForGetHistoryOfPurchaseRequest request) {
 
-        List<Item> items = buyersService.findHistoryOfPurchases(request);
+        List<ItemPurchase> purchases = buyersService.findHistoryOfPurchases(request);
 
-        log.info("Найдены товары {} cо статусом {} в истории покупателя с id {}", items.stream().map(Item::getId).collect(Collectors.toList()), request.getItemPurchaseStatus(), request.getBuyerId());
-
-        return ResponseEntity.ok(itemMapper.toItemResponseList(items));
+        log.info("Найдены товары {} в истории покупателя с id  {}", purchases.stream().map(ItemPurchase::getItem).map(Item::getId).collect(Collectors.toList()), request.getBuyerId());
+        return ResponseEntity.ok(purchaseHistoryMapper.toResponse(purchases));
     }
 }
