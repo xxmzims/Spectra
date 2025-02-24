@@ -18,7 +18,6 @@ import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 import ru.ugrinovich.Spectra.request.Item.*;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
-import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +37,7 @@ public interface BuyerAPI {
     })
 
     @PostMapping("/items/add_to_purchase_list")
-    ResponseEntity<HttpStatus> addItemToPurchaseList(ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest);
+    ResponseEntity<HttpStatus> addItemToPurchaseList(@RequestBody @Valid ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest);
 
     @Operation(summary = "Получение данных всех покупателей")
     @ApiResponses(value = {
@@ -78,7 +77,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/new")
-    ResponseEntity<BuyerResponse> createBuyer(@RequestBody BuyerCreateRequest buyer);
+    ResponseEntity<BuyerResponse> createBuyer(@RequestBody @Valid BuyerCreateRequest buyer);
 
     @Operation(summary = "Получение данных покупателя по идентификатору")
     @ApiResponses(value = {
@@ -108,7 +107,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping("/{buyerId}/update")
-    ResponseEntity<BuyerResponse> updateBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId, @RequestBody BuyerUpdateRequest buyer);
+    ResponseEntity<BuyerResponse> updateBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId, @RequestBody @Valid BuyerUpdateRequest buyer);
 
     @Operation(summary = "Получения списка покупок в зависимости от статуса покупки")
     @ApiResponses(value = {

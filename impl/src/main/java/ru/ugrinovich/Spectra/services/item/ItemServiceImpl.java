@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @ConditionalOnProperty(name = "app.in-memory-model.enabled", havingValue = "false")
+
 public class ItemServiceImpl implements ItemService {
 
     private final ItemMapper itemMapper;

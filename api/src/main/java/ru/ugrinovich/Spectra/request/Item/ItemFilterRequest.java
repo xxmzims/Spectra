@@ -27,13 +27,13 @@ public class ItemFilterRequest {
 
     @Schema(description = "Номер страницы", example = "0")
     @Min(0)
-    private Integer offset;
+    private Integer offset = 0;
 
     @Schema(description = "Количество элементов на странице", example = "10")
     @Min(0)
-    private Integer limit;
+    private Integer limit = 5;
 
     @Schema(description = "Сортировка товара", example = "DATE_ASC")
-    private ItemTypeSort order;
+    private ItemTypeSort order = ItemTypeSort.DATE_ASC;
 
 }
