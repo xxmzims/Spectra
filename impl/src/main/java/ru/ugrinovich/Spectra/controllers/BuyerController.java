@@ -42,12 +42,6 @@ public class BuyerController implements BuyerAPI {
     private final BuyerMapper buyerMapper;
     private final PurchaseHistoryMapper purchaseHistoryMapper;
 
-    public ResponseEntity<List<BuyerResponse>> findAllBuyers() {
-        List<Buyer> buyers = buyersService.findAllBuyers();
-        log.info("Найдены покупатели с id {}", buyers.stream().map(Buyer::getId).collect(Collectors.toList()));
-
-        return ResponseEntity.ok(buyerMapper.toBuyerResponses(buyers));
-    }
 
     @Override
     public ResponseEntity<HttpStatus> addItemToPurchaseList(ForAddItemToPurchaseListRequest request) {
@@ -81,12 +75,6 @@ public class BuyerController implements BuyerAPI {
         log.info("Найден покупатель с id {}", buyer.getId());
 
         return ResponseEntity.ok(buyerMapper.toBuyerResponse(buyer));
-    }
-
-    public ResponseEntity<HttpStatus> deleteBuyer(UUID id) {
-        buyersService.deleteById(id);
-        log.info("Удален покупатель с id {}", id);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     public ResponseEntity<BuyerResponse> updateBuyer(UUID id, BuyerUpdateRequest buyerUpdateRequest) {

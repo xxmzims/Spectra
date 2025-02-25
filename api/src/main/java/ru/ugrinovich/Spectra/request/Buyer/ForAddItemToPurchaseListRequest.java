@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 
 import java.util.UUID;
 

@@ -8,19 +8,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.API.AdministratorAPI;
 import ru.ugrinovich.Spectra.entities.Administrator;
+import ru.ugrinovich.Spectra.entities.Buyer;
 import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.mappers.AdministratorMapper;
+import ru.ugrinovich.Spectra.mappers.BuyerMapper;
 import ru.ugrinovich.Spectra.mappers.ItemMapper;
 import ru.ugrinovich.Spectra.mappers.PurchaseHistoryMapper;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorCreateRequest;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorUpdateRequest;
+import ru.ugrinovich.Spectra.request.Buyer.BuyerCreateRequest;
+import ru.ugrinovich.Spectra.request.Buyer.BuyerUpdateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
+import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerResponse;
 import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 import ru.ugrinovich.Spectra.services.administrator.AdministratorService;
+import ru.ugrinovich.Spectra.services.buyer.BuyerService;
 import ru.ugrinovich.Spectra.services.item.ItemService;
 
 import java.util.List;
@@ -40,6 +47,8 @@ public class AdministratorController implements AdministratorAPI {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
     private final AdministratorService administratorsService;
+    private final BuyerService buyerService;
+    private final BuyerMapper buyerMapper;
 
     public ResponseEntity<List<AdministratorResponse>> findAllAdministrators() {
         List<Administrator> administrators = administratorsService.findAllAdministrators();
@@ -51,7 +60,7 @@ public class AdministratorController implements AdministratorAPI {
     @Override
     public ResponseEntity<List<ItemResponse>> batchAddItems(List<ItemCreateRequest> items) {
         List<Item> itemsAdding = itemMapper.toItem(items);
-        log.info("Создано {} товаров с id {}", itemsAdding.size(), itemsAdding.stream().map(item -> item.getId()).collect(Collectors.toList()));
+        log.info("Создано {} товаров с id {}", itemsAdding.size(), itemsAdding.stream().map(Item::getId).collect(Collectors.toList()));
         itemService.save(itemsAdding);
 
         return ResponseEntity.ok(itemMapper.toItemResponseList(itemsAdding));
@@ -108,4 +117,37 @@ public class AdministratorController implements AdministratorAPI {
         return new  ResponseEntity<>(administratorResponse, ACCEPTED);
     }
 
+    @Override
+    public ResponseEntity<BuyerResponse> createBuyer(BuyerCreateRequest buyerCreateRequest) {
+
+        Buyer buyer = buyerMapper.toBuyer(buyerCreateRequest);
+
+        buyerService.save(buyer);
+        log.info("Создан покупатель с id {}", buyer.getId());
+        BuyerResponse buyerResponse = buyerMapper.toBuyerResponse(buyer);
+        return new ResponseEntity<>(buyerResponse, ACCEPTED);
+    }
+
+    @Override
+    public ResponseEntity<BuyerResponse> updateBuyer(UUID id, BuyerUpdateRequest BuyerUpdateRequest) {
+        Buyer buyer = buyerMapper.toBuyer(BuyerUpdateRequest);
+        buyerService.updateById(id, buyer);
+        log.info("Обновлены данные покупателя с id {}", id);
+        BuyerResponse buyerResponse = buyerMapper.toBuyerResponse(buyer);
+        return new ResponseEntity<>(buyerResponse, ACCEPTED);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> deleteBuyer(UUID id) {
+        buyerService.deleteById(id);
+        log.info("Удален покупатель с id {}", id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    public ResponseEntity<ForAdministratorBuyerResponse> getBuyer(UUID id) {
+        ForAdministratorBuyerResponse forAdministratorBuyerResponse = buyerMapper.toForAdministratorBuyerResponse(buyerService.findById(id));
+        log.info("Найден покупатель с id {}", id);
+        return ResponseEntity.ok(forAdministratorBuyerResponse);
+    }
 }

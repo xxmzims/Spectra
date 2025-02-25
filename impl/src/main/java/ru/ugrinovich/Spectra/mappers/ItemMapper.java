@@ -6,6 +6,7 @@ import ru.ugrinovich.Spectra.dto.ItemDTO;
 import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemUpdateRequest;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerResponse;
 import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
@@ -37,4 +38,5 @@ public interface ItemMapper {
     ItemDTO toItemDTO (ItemCreateRequest itemCreateRequest);
 
     ItemDTO toItemDTO (ItemUpdateRequest itemUpdateRequest);
+
 }

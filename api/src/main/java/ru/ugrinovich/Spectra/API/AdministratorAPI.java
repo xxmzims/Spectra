@@ -1,4 +1,5 @@
 package ru.ugrinovich.Spectra.API;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,20 +11,67 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorCreateRequest;
 import ru.ugrinovich.Spectra.request.Administrator.AdministratorUpdateRequest;
+import ru.ugrinovich.Spectra.request.Buyer.BuyerCreateRequest;
+import ru.ugrinovich.Spectra.request.Buyer.BuyerUpdateRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
+import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerResponse;
 import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.util.List;
 import java.util.UUID;
+
 @Tag(
         name = "Administrator",
         description = "Позволяет управлять данными администраторов"
 )
-@RequestMapping("/api/v1/administrators")
+@RequestMapping("/api/v1/administrator")
 public interface AdministratorAPI {
+
+
+    @Operation(summary = "Создание нового покупателя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("/buyers/new")
+    ResponseEntity<BuyerResponse> createBuyer(@RequestBody @Valid BuyerCreateRequest buyerCreateRequest);
+
+    @Operation(summary = "Обнновление покупателя по уникальному иденнтификатору")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PatchMapping("/buyers/{id}/update")
+    ResponseEntity<BuyerResponse> updateBuyer(@PathVariable("id") @Parameter(description = "Уникальный идентификатор")  UUID id, @RequestBody @Valid BuyerUpdateRequest BuyerUpdateRequest);
+
+    @Operation(summary = "Удаление покупателя по уникальному иденнтификатору")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @DeleteMapping("/buyers/{id}/delete")
+    ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("id") @Parameter(description = "Уникальный идентификатор")  UUID id);
+
+    @Operation(summary = "Получение данных о покупателе по уникальному идентификатору")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/buyers/{id}")
+    ResponseEntity<ForAdministratorBuyerResponse> getBuyer(@PathVariable("id") @Parameter(description = "Уникальный идентификатор")  UUID id);
+
 
     @Operation(summary = "Получение остатка по товарам")
     @ApiResponses(value = {

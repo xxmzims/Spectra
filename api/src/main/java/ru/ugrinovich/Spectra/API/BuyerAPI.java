@@ -30,8 +30,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/buyers")
 public interface BuyerAPI {
 
-
-
     @Operation(summary = "Запрос на добавление в список покупок товара")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
@@ -42,16 +40,6 @@ public interface BuyerAPI {
 
     @PostMapping("/items/to_purchase_list")
     ResponseEntity<HttpStatus> addItemToPurchaseList(@RequestBody @Valid ForAddItemToPurchaseListRequest forAddItemToPurchaseListRequest);
-
-    @Operation(summary = "Получение данных всех покупателей")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping()
-    ResponseEntity<List<BuyerResponse>> findAllBuyers();
 
     @Operation(summary = "Получение данных товара для покупателя")
     @ApiResponses(value = {
@@ -100,16 +88,7 @@ public interface BuyerAPI {
             @ApiResponse(responseCode = "404", description = "Not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @DeleteMapping("/{buyerId}/delete")
-    ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId);
 
-    @Operation(summary = "Обновление данных покупателя по идентификатору")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
     @PatchMapping("/{buyerId}/update")
     ResponseEntity<BuyerResponse> updateBuyer(@PathVariable("buyerId") @Parameter(description = "Уникальный идентификатор покупателя") UUID buyerId, @RequestBody @Valid BuyerUpdateRequest buyer);
 
