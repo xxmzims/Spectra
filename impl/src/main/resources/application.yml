@@ -12,6 +12,8 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/changelog.xml
     enabled: true
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
 app:
   in-memory-model:
     enabled: false

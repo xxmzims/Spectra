@@ -61,4 +61,5 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "buyer_id", referencedColumnName = "buyer_id")
     private Buyer buyer;
+
 }

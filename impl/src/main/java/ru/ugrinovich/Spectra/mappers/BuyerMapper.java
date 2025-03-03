@@ -9,6 +9,7 @@ import ru.ugrinovich.Spectra.request.Buyer.BuyerCreateRequest;
 import ru.ugrinovich.Spectra.request.Buyer.BuyerUpdateRequest;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
 import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerResponse;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerWithItemsResponse;
 
 import java.util.List;
 
@@ -34,4 +35,6 @@ public interface BuyerMapper {
     List<BuyerResponse> toBuyerResponses(List<Buyer> buyers);
 
     ForAdministratorBuyerResponse toForAdministratorBuyerResponse(Buyer buyer);
+
+    List<ForAdministratorBuyerWithItemsResponse> toForAdministratorBuyerWithItemsResponse(List<Buyer> buyers);
 }

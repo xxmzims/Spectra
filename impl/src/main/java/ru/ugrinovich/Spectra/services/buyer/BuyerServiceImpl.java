@@ -2,6 +2,7 @@ package ru.ugrinovich.Spectra.services.buyer;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import ru.ugrinovich.Spectra.entities.Buyer;
@@ -9,17 +10,21 @@ import ru.ugrinovich.Spectra.entities.Item;
 import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.exceptions.is_already_exist.EmailAdressIsAlreadyExistException;
 import ru.ugrinovich.Spectra.exceptions.not_found.BuyerNotFoundException;
+import ru.ugrinovich.Spectra.exceptions.not_found.BuyersNotFoundException;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.DontHaveAnyItemsException;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
+import ru.ugrinovich.Spectra.mappers.BuyerMapper;
 import ru.ugrinovich.Spectra.repositories.jpa.BuyerRepositoryJpa;
 import ru.ugrinovich.Spectra.repositories.jpa.PurchaseHistoryJpa;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerWithItemsResponse;
 import ru.ugrinovich.Spectra.services.item.ItemService;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,6 +32,7 @@ import java.util.UUID;
 public class BuyerServiceImpl implements BuyerService {
 
     private final ItemService itemService;
+    private final BuyerMapper buyerMapper;
     private final BuyerRepositoryJpa buyerRepositoryJpa;
     private final PurchaseHistoryJpa purchaseHistoryJpa;
 
@@ -64,8 +70,8 @@ public class BuyerServiceImpl implements BuyerService {
     public void addItemToPurchaseList(ForAddItemToPurchaseListRequest request) {
         Buyer buyer = findById(request.getBuyerId());
         Item item = itemService.findById(request.getItemId());
-        Integer amount = item.getAmount();
-        if (amount.equals(0)) {
+        int amount = item.getAmount();
+        if (amount < request.getQuantity()) {
             throw new ItemOutOfStockException("Товара нет в наличии. Количество оставшегося товара: " + amount);
         }
         item.setAmount(amount - request.getQuantity());
@@ -78,7 +84,7 @@ public class BuyerServiceImpl implements BuyerService {
         purchaseHistoryJpa.save(itemPurchase);
     }
 
-    public void checkExistEmail(String email) {
+    private void checkExistEmail(String email) {
         buyerRepositoryJpa.findBuyerByEmail(email).ifPresent(client -> {
             throw new EmailAdressIsAlreadyExistException(email);
         });
@@ -87,5 +93,13 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public List<ItemPurchase> findHistoryOfPurchases(ForGetHistoryOfPurchaseRequest request) {
         return purchaseHistoryJpa.findByBuyer(findById(request.getBuyerId())).orElseThrow(() -> new DontHaveAnyItemsException("У пользователя нет товаров"));
+    }
+
+
+
+    public List<ForAdministratorBuyerWithItemsResponse> findAllBuyersWithItems() {
+        log.warn("Попытка найти покупателей в БД");
+        List<Buyer> buyers = buyerRepositoryJpa.findAllBuyersWithItems().orElseThrow(BuyersNotFoundException::new);
+        return buyerMapper.toForAdministratorBuyerWithItemsResponse(buyers);
     }
 }

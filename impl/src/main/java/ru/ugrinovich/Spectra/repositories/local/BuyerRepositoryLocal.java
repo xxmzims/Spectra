@@ -33,12 +33,4 @@ public class BuyerRepositoryLocal {
         return buyers.stream().filter(buyer -> buyer.getId().equals(id)).findFirst();
     }
 
-    public void assignItemByBuyerId(UUID id, Item item){
-        Buyer buyer = findById(id).get();
-
-        if(buyer.getItems() == null){
-            buyer.setItems(new ArrayList<>());
-        }
-        buyer.getItems().add(item);
-    }
 }

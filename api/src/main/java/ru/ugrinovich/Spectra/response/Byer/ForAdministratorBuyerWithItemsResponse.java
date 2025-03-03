@@ -4,15 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
 @Builder
-public class ForAdministratorBuyerResponse {
+public class ForAdministratorBuyerWithItemsResponse {
+
     private UUID id;
 
     private String firstName;
@@ -27,4 +30,5 @@ public class ForAdministratorBuyerResponse {
 
     private Instant updateAt;
 
+    private List<ItemResponse> purchases;
 }

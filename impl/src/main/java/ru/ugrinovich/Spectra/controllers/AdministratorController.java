@@ -23,6 +23,7 @@ import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
 import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerResponse;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerWithItemsResponse;
 import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
@@ -149,5 +150,13 @@ public class AdministratorController implements AdministratorAPI {
         ForAdministratorBuyerResponse forAdministratorBuyerResponse = buyerMapper.toForAdministratorBuyerResponse(buyerService.findById(id));
         log.info("Найден покупатель с id {}", id);
         return ResponseEntity.ok(forAdministratorBuyerResponse);
+    }
+
+    @Override
+    public ResponseEntity<List<ForAdministratorBuyerWithItemsResponse>> getBuyersWithItems() {
+        List<ForAdministratorBuyerWithItemsResponse> buyers = buyerService.findAllBuyersWithItems();
+        log.info("Найдены покупатели с id: {}", buyers.stream().map(ForAdministratorBuyerWithItemsResponse::getId).collect(Collectors.toList()));
+
+        return ResponseEntity.ok(buyers);
     }
 }
