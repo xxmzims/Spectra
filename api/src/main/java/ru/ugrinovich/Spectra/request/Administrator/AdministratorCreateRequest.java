@@ -3,6 +3,7 @@ package ru.ugrinovich.Spectra.request.Administrator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
@@ -11,9 +12,10 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 @AllArgsConstructor
 @Builder
 @Schema(description = "Данные администратора для создания")
+@FieldDefaults(level=AccessLevel.PRIVATE)
 public class AdministratorCreateRequest {
 
     @Schema(description = "Имя администратора", requiredMode = REQUIRED)
     @NotBlank
-    private String name;
+    String name;
 }

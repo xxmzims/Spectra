@@ -78,7 +78,7 @@ public class BuyerServiceImpl implements BuyerService {
         purchaseHistoryJpa.save(itemPurchase);
     }
 
-    public void checkExistEmail(String email) {
+    private void checkExistEmail(String email) {
         buyerRepositoryJpa.findBuyerByEmail(email).ifPresent(client -> {
             throw new EmailAdressIsAlreadyExistException(email);
         });

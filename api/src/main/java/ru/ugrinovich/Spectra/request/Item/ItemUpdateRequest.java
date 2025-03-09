@@ -19,24 +19,24 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 public class ItemUpdateRequest {
 
     @Schema(description = "Наименование товара", requiredMode = REQUIRED)
-    private String name;
+    String name;
 
     @Schema(description = "Серийный номер товара", requiredMode = REQUIRED)
-    private String serialNumber;
+    String serialNumber;
 
     @Schema(description = "Описание товара", requiredMode = REQUIRED)
-    private String description;
+    String description;
 
     @Schema(description = "Категория товара", requiredMode = REQUIRED, example = "PHONE")
-    private ItemType category;
+    ItemType category;
 
     @Schema(description = "Цена товара", requiredMode = REQUIRED, example = "25.3")
     @DecimalMin(value = "0.01", message = "Цена товара не может быть меньше 0.01")
     @NotNull
-    private double price;
+    double price;
 
     @Schema(description = "Количество товара", requiredMode = REQUIRED)
     @Min(value = 0, message = "Количество товара не может быть меньше 0")
-    private int amount;
+    int amount;
 
 }

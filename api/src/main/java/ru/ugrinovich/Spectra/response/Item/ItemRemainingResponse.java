@@ -1,9 +1,7 @@
 package ru.ugrinovich.Spectra.response.Item;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.UUID;
 
@@ -11,18 +9,19 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class ItemRemainingResponse {
 
-    private UUID id;
+    UUID id;
 
-    private String name;
+    String name;
 
-    private String serialNumber;
+    String serialNumber;
 
-    private int amount;
+    int amount;
 
-    private int price;
+    int price;
 
-    private int totalPrice;
+    int totalPrice;
 
 }

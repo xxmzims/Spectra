@@ -1,9 +1,7 @@
 package ru.ugrinovich.Spectra.response.Item;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.ugrinovich.Spectra.request.Item.ItemType;
 
 import java.util.UUID;
@@ -12,20 +10,21 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemResponse {
 
-    private UUID id;
+    UUID id;
 
-    private String name;
+    String name;
 
-    private String serialNumber;
+    String serialNumber;
 
-    private String description;
+    String description;
 
-    private ItemType category;
+    ItemType category;
 
-    private double price;
+    double price;
 
-    private int amount;
+    int amount;
 
 }

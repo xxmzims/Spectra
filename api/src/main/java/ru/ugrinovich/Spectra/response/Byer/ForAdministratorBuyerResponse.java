@@ -1,9 +1,7 @@
 package ru.ugrinovich.Spectra.response.Byer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -12,19 +10,21 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class ForAdministratorBuyerResponse {
-    private UUID buyerId;
 
-    private String firstName;
+    UUID buyerId;
 
-    private String secondName;
+    String firstName;
 
-    private int age;
+    String secondName;
 
-    private String email;
+    int age;
 
-    private Instant createAt;
+    String email;
 
-    private Instant updateAt;
+    Instant createAt;
+
+    Instant updateAt;
 
 }

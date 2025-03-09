@@ -1,20 +1,19 @@
 package ru.ugrinovich.Spectra.response.Byer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class BuyerResponse{
-    private String firstName;
+    String firstName;
 
-    private String secondName;
+    String secondName;
 
-    private int age;
+    int age;
 
-    private String email;
+    String email;
 }

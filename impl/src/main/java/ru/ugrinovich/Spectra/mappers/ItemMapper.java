@@ -15,7 +15,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
-    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
     List<ItemRemainingResponse> toRemainingResponse(List<Item> items);
 
