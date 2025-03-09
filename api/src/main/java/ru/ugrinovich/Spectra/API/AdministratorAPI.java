@@ -17,6 +17,7 @@ import ru.ugrinovich.Spectra.request.Item.ItemCreateRequest;
 import ru.ugrinovich.Spectra.response.Administrator.AdministratorResponse;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
 import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerResponse;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerWithItemsResponse;
 import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemRemainingResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
@@ -61,6 +62,16 @@ public interface AdministratorAPI {
     })
     @DeleteMapping("/buyers/{id}/delete")
     ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("id") @Parameter(description = "Уникальный идентификатор")  UUID id);
+
+    @Operation(summary = "Получение данных о всех покупателях")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/buyers")
+    ResponseEntity<List<ForAdministratorBuyerWithItemsResponse>> getBuyersWithItems();
 
     @Operation(summary = "Получение данных о покупателе по уникальному идентификатору")
     @ApiResponses(value = {

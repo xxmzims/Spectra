@@ -9,6 +9,7 @@ import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockExcept
 import ru.ugrinovich.Spectra.repositories.local.BuyerRepositoryLocal;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
+import ru.ugrinovich.Spectra.response.Byer.ForAdministratorBuyerWithItemsResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,10 @@ import java.util.UUID;
 @ConditionalOnProperty(name = "app.in-memory-model.enabled", havingValue = "true")
 public class BuyerServiceLocalImpl implements BuyerService {
 
+    @Override
+    public List<ForAdministratorBuyerWithItemsResponse> findAllBuyersWithItems() {
+        return null;
+    }
     private final BuyerRepositoryLocal buyerRepository;
 
     public List<Buyer> findAllBuyers() {

@@ -40,7 +40,7 @@ public class Buyer {
     private String email;
 
     @OneToMany(mappedBy = "buyer")
-    private List<Item> Items;
+    private List<ItemPurchase> purchases;
 
     @CreationTimestamp
     @Column(name = "create_at", updatable = false)
