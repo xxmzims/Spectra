@@ -1,6 +1,7 @@
 package ru.ugrinovich.Spectra.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -60,6 +61,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "buyer_id", referencedColumnName = "buyer_id")
+    @JsonIgnore
     private Buyer buyer;
 
 }

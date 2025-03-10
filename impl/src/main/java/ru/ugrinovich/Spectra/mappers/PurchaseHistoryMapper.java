@@ -1,37 +1,42 @@
 package ru.ugrinovich.Spectra.mappers;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.response.Item.ForAdminOfferResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemPurchaseHistoryResponse;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class PurchaseHistoryMapper {
+@Mapper(componentModel = "spring")
+public interface PurchaseHistoryMapper {
 
-    public List<ItemPurchaseHistoryResponse> toResponse(List<ItemPurchase> purchases) {
-        return purchases.stream().map(purchase -> ItemPurchaseHistoryResponse.builder()
-                .itemId(purchase.getItem().getId())
-                .purchaseDate(purchase.getPurchaseDate())
-                .serialNumber(purchase.getItem().getSerialNumber())
-                .name(purchase.getItem().getName())
-                .quantity(purchase.getQuantity())
-                .totalPrice(purchase.getTotalPrice())
-                .build()).collect(Collectors.toList());
+    PurchaseHistoryMapper INSTANCE = Mappers.getMapper(PurchaseHistoryMapper.class);
+
+    @Mapping(source = "item.id", target = "itemId")
+    @Mapping(source = "item.serialNumber", target = "serialNumber")
+    @Mapping(source = "item.name", target = "name")
+    ItemPurchaseHistoryResponse toItemPurchaseHistoryResponse(ItemPurchase purchase);
+
+    @Mapping(source = "id", target = "offerId")
+    @Mapping(source = "buyer.id", target = "buyerId")
+    @Mapping(source = "buyer.firstName", target = "buyerName")
+    @Mapping(source = "item.id", target = "itemId")
+    @Mapping(source = "item.name", target = "itemName")
+    @Mapping(source = "item.serialNumber", target = "serialNumber")
+    ForAdminOfferResponse toForAdminOfferResponse(ItemPurchase purchase);
+
+    default List<ItemPurchaseHistoryResponse> toResponseList(List<ItemPurchase> purchases) {
+        return purchases.stream()
+                .map(this::toItemPurchaseHistoryResponse)
+                .collect(Collectors.toList());
     }
-    public List<ForAdminOfferResponse> toAdminOfferResponse(List<ItemPurchase> purchases){
-        return purchases.stream().map(purchase -> ForAdminOfferResponse.builder()
-                .offerId(purchase.getId())
-                .buyerId(purchase.getBuyer().getId())
-                .itemId(purchase.getItem().getId())
-                .buyerName(purchase.getBuyer().getFirstName())
-                .itemName(purchase.getItem().getName())
-                .serialNumber(purchase.getItem().getSerialNumber())
-                .purchaseDate(purchase.getPurchaseDate())
-                .quantity(purchase.getQuantity())
-                .totalPrice(purchase.getTotalPrice()).build()).collect(Collectors.toList());
+
+    default List<ForAdminOfferResponse> toAdminOfferResponseList(List<ItemPurchase> purchases) {
+        return purchases.stream()
+                .map(this::toForAdminOfferResponse)
+                .collect(Collectors.toList());
     }
 }

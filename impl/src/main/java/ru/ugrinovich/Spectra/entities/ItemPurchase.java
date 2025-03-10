@@ -15,7 +15,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "purchase_history")
 public class ItemPurchase {
-
     @Id
     @Column(name = "purchase_id")
     @GeneratedValue(strategy = GenerationType.UUID)

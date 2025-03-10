@@ -14,5 +14,5 @@ public interface BuyerRepositoryJpa extends JpaRepository<Buyer, UUID> {
     Optional<Buyer> findBuyerByEmail(String email);
 
     @Query("select b from Buyer b left join fetch b.purchases pur left join fetch pur.item")
-    Optional<List<Buyer>> findAllBuyersWithItems();
+    Optional<List<Buyer>> findAllBuyersWithPurchases();
 }

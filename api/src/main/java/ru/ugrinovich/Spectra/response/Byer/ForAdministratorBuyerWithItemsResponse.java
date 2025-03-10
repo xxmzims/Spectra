@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.ugrinovich.Spectra.response.Item.ItemPurchaseHistoryResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.time.Instant;
@@ -30,5 +31,5 @@ public class ForAdministratorBuyerWithItemsResponse {
 
     private Instant updateAt;
 
-    private List<ItemResponse> purchases;
+    private List<ItemPurchaseHistoryResponse> purchases;
 }

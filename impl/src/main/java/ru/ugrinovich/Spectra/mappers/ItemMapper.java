@@ -15,6 +15,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ItemMapper {
+
     ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
     List<ItemRemainingResponse> toRemainingResponse(List<Item> items);
@@ -38,5 +39,6 @@ public interface ItemMapper {
     ItemDTO toItemDTO (ItemCreateRequest itemCreateRequest);
 
     ItemDTO toItemDTO (ItemUpdateRequest itemUpdateRequest);
+
 
 }
