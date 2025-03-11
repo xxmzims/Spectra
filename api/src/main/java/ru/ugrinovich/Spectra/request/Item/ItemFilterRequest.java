@@ -2,11 +2,17 @@ package ru.ugrinovich.Spectra.request.Item;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 
 @Data
 @Schema(description = "Объект для передачи данных о фильтрации")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemFilterRequest {
 
     @Schema(description = "Категория товара", example = "PHONE")
@@ -27,13 +33,13 @@ public class ItemFilterRequest {
 
     @Schema(description = "Номер страницы", example = "0")
     @Min(0)
-    private Integer offset = 0;
+    private Integer offset;
 
     @Schema(description = "Количество элементов на странице", example = "10")
     @Min(0)
-    private Integer limit = 5;
+    private Integer limit;
 
     @Schema(description = "Сортировка товара", example = "DATE_ASC")
-    private ItemTypeSort order = ItemTypeSort.DATE_ASC;
+    private ItemTypeSort order;
 
 }

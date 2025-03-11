@@ -3,6 +3,7 @@ package ru.ugrinovich.Spectra.request.Buyer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @NoArgsConstructor
 @Data
+@Builder
 @AllArgsConstructor
 @Schema(description = "Запрос на добавление в список покупок товара")
 public class ForAddItemToPurchaseListRequest {
