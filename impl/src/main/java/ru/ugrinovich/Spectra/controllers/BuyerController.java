@@ -90,6 +90,6 @@ public class BuyerController implements BuyerAPI {
         List<ItemPurchase> purchases = buyersService.findHistoryOfPurchases(request);
 
         log.info("Найдены товары {} в истории покупателя с id  {}", purchases.stream().map(ItemPurchase::getItem).map(Item::getId).collect(Collectors.toList()), request.getBuyerId());
-        return ResponseEntity.ok(purchaseHistoryMapper.toResponse(purchases));
+        return ResponseEntity.ok(purchaseHistoryMapper.toResponseList(purchases));
     }
 }

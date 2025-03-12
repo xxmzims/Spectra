@@ -99,7 +99,7 @@ public class BuyerServiceImpl implements BuyerService {
 
     public List<ForAdministratorBuyerWithItemsResponse> findAllBuyersWithItems() {
         log.warn("Попытка найти покупателей в БД");
-        List<Buyer> buyers = buyerRepositoryJpa.findAllBuyersWithItems().orElseThrow(BuyersNotFoundException::new);
+        List<Buyer> buyers = buyerRepositoryJpa.findAllBuyersWithPurchases().orElseThrow(BuyersNotFoundException::new);
         return buyerMapper.toForAdministratorBuyerWithItemsResponse(buyers);
-    }
+}
 }

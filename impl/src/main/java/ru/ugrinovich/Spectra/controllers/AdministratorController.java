@@ -87,7 +87,7 @@ public class AdministratorController implements AdministratorAPI {
     public ResponseEntity<List<ForAdminOfferResponse>> findAllOffers() {
         List<ItemPurchase> itemPurchases = itemService.getAllOffers();
         log.info("Получены все оферы");
-        return ResponseEntity.ok(purchaseHistoryMapper.toAdminOfferResponse(itemPurchases));
+        return ResponseEntity.ok(purchaseHistoryMapper.toAdminOfferResponseList(itemPurchases));
     }
 
     public ResponseEntity<AdministratorResponse> createAdministrator(AdministratorCreateRequest administratorCreateRequest) {
