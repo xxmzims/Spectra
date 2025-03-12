@@ -3,11 +3,13 @@ package ru.ugrinovich.Spectra.request.Item;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 
 @Data
+@Builder
 @Schema(description = "Объект для передачи данных о фильтрации")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ItemFilterRequest {

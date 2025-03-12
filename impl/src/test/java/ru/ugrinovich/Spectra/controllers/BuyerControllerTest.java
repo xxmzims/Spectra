@@ -3,7 +3,6 @@ package ru.ugrinovich.Spectra.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.jfr.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,25 +13,27 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.ugrinovich.Spectra.entities.Buyer;
 import ru.ugrinovich.Spectra.entities.Item;
+import ru.ugrinovich.Spectra.entities.ItemPurchase;
 import ru.ugrinovich.Spectra.mappers.BuyerMapper;
 import ru.ugrinovich.Spectra.mappers.ItemMapper;
 import ru.ugrinovich.Spectra.mappers.PurchaseHistoryMapper;
 import ru.ugrinovich.Spectra.request.Buyer.BuyerCreateRequest;
+import ru.ugrinovich.Spectra.request.Buyer.BuyerUpdateRequest;
 import ru.ugrinovich.Spectra.request.Buyer.ForAddItemToPurchaseListRequest;
+import ru.ugrinovich.Spectra.request.Buyer.ForGetHistoryOfPurchaseRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemFilterRequest;
 import ru.ugrinovich.Spectra.request.Item.ItemType;
 import ru.ugrinovich.Spectra.request.Item.ItemTypeSort;
 import ru.ugrinovich.Spectra.response.Byer.BuyerResponse;
+import ru.ugrinovich.Spectra.response.Item.ItemPurchaseHistoryResponse;
 import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 import ru.ugrinovich.Spectra.services.buyer.BuyerServiceImpl;
 import ru.ugrinovich.Spectra.services.item.ItemServiceImpl;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class BuyerControllerTest {
@@ -93,7 +95,6 @@ class BuyerControllerTest {
                 .age(20)
                 .firstName("sasha")
                 .secondName("viktorov")
-                .age(10)
                 .email("xxmzism@gmail.com")
                 .build();
 
@@ -196,6 +197,72 @@ class BuyerControllerTest {
                 .andExpect(content().json(toJson(buyerResponse)));
     }
 
+    @Test
+    void getBuyer_ById_WhenExists_ShouldReturnBuyer() throws Exception {
+
+        when(buyerService.findById(uuid)).thenReturn(buyer);
+        when(buyerMapper.toBuyerResponse(buyer)).thenReturn(buyerResponse);
+
+        mockMvc.perform(get("/api/v1/buyers/{id}", uuid))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(buyerResponse)));
+    }
+
+    @Test
+    void updateBuyer_WhenExists_ShouldReturnUpdatedBuyer() throws Exception {
+        BuyerUpdateRequest buyerUpdateRequest = BuyerUpdateRequest.builder()
+                .age(20)
+                .firstName("sasha")
+                .secondName("viktorov")
+                .email("xxmzism@gmail.com")
+                .build();
+
+        when(buyerMapper.toBuyerResponse(buyer)).thenReturn(buyerResponse);
+        when(buyerMapper.toBuyer(buyerUpdateRequest)).thenReturn(buyer);
+
+        mockMvc.perform(patch("/api/v1/buyers/{id}/update", uuid)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(buyerUpdateRequest)))
+                .andExpect(status().isAccepted())
+                .andExpect(content().json(toJson(buyerResponse)));
+    }
+
+    @Test
+    void getHistoryOfPleasures_WhenExists_ShouldReturnListOfPleasures() throws Exception{
+        UUID puchaseUUID = UUID.randomUUID();
+        ForGetHistoryOfPurchaseRequest forGetHistoryOfPurchaseRequest = new ForGetHistoryOfPurchaseRequest(uuid);
+
+        ItemPurchaseHistoryResponse response = ItemPurchaseHistoryResponse.builder()
+                .itemId(puchaseUUID)
+                .itemId(uuid)
+                .serialNumber("sdsdsd")
+                .totalPrice(200.2)
+                .quantity(10)
+                .serialNumber("3sdsd4234234234")
+                .build();
+
+
+        ItemPurchase itemPurchase = ItemPurchase.builder()
+                .id(puchaseUUID)
+                .buyer(buyer)
+                .item(item)
+                .quantity(10)
+                .totalPrice(200.2)
+                .build();
+
+        List<ItemPurchase> purchases = List.of(itemPurchase);
+
+        List<ItemPurchaseHistoryResponse> purchaseHistoryResponse = List.of(response);
+        when(buyerService.findHistoryOfPurchases(forGetHistoryOfPurchaseRequest)).thenReturn(purchases);
+        when(purchaseHistoryMapper.toResponseList(purchases)).thenReturn(purchaseHistoryResponse);
+
+        mockMvc.perform(post("/api/v1/buyers//get_history_of_pleasures")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(forGetHistoryOfPurchaseRequest)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(purchaseHistoryResponse)));
+
+    }
 
     private <T> String toJson(T o) throws JsonProcessingException {
         return objectMapper.writeValueAsString(o);

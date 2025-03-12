@@ -47,6 +47,7 @@ public class ItemServiceImpl implements ItemService {
         Specification<Item> spec = itemSpecification.toSpecForAllItems(filter);
 
         Page<Item> items = itemRepositoryJpa.findAll(spec, PageRequest.of(filter.getOffset(), filter.getLimit(), filter.getOrder().getSortValue()));
+
         return new PageImpl<>(
                 items.getContent().stream()
                         .map(itemMapper::toItemResponse)

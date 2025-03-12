@@ -20,7 +20,15 @@ import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
 class AdministratorServiceTest {
+    @Mock
+    private AdministratorRepositoryJpa administratorRepository;
+
+    @InjectMocks
+    private AdministratorServiceImpl administratorService;
+
+
     private Administrator administrator;
+
     private UUID uuid;
 
     @BeforeEach
@@ -32,11 +40,6 @@ class AdministratorServiceTest {
                 .build();
     }
 
-    @Mock
-    private AdministratorRepositoryJpa administratorRepository;
-
-    @InjectMocks
-    private AdministratorServiceImpl administratorService;
 
     @Test
     void findAllAdministrators_ShouldReturnAllAdmins() {
@@ -44,7 +47,8 @@ class AdministratorServiceTest {
         List<Administrator> expected = List.of(
                 administrator);
 
-        when(administratorRepository.findAll()).thenReturn(expected);
+        when(administratorRepository.findAll())
+                .thenReturn(expected);
 
         List<Administrator> result = administratorService.findAllAdministrators();
 
@@ -56,7 +60,8 @@ class AdministratorServiceTest {
     @Test
     void findById_WhenExists_ShouldReturnAdmin() {
 
-        when(administratorRepository.findById(uuid)).thenReturn(Optional.of(administrator));
+        when(administratorRepository.findById(uuid))
+                .thenReturn(Optional.of(administrator));
 
         Administrator result = administratorService.findById(uuid);
 
@@ -70,7 +75,8 @@ class AdministratorServiceTest {
 
         Optional<Administrator> expected = Optional.empty();
 
-        when(administratorRepository.findById(uuid)).thenReturn(expected);
+        when(administratorRepository.findById(uuid))
+                .thenReturn(expected);
 
         assertThrows(AdministratorNotFoundException.class, () -> administratorService.findById(uuid));
 
@@ -79,7 +85,6 @@ class AdministratorServiceTest {
 
     @Test
     void save_ShouldCallRepositorySave() {
-
         administratorService.save(administrator);
         verify(administratorRepository).save(administrator);
     }
@@ -131,7 +136,8 @@ class AdministratorServiceTest {
     @Test
     void update_WhenNotExists_ShouldThrowException() {
 
-        when(administratorRepository.findById(any())).thenReturn(Optional.empty());
+        when(administratorRepository.findById(any()))
+                .thenReturn(Optional.empty());
 
         assertThrows(AdministratorNotFoundException.class,
                 () -> administratorService.updateById(uuid, new Administrator()));
