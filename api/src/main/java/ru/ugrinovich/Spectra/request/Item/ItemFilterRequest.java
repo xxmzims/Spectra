@@ -2,9 +2,7 @@ package ru.ugrinovich.Spectra.request.Item;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 
@@ -12,6 +10,8 @@ import ru.ugrinovich.Spectra.validation.annotations.EnumValidate;
 @Builder
 @Schema(description = "Объект для передачи данных о фильтрации")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemFilterRequest {
 
     @Schema(description = "Категория товара", example = "PHONE")
