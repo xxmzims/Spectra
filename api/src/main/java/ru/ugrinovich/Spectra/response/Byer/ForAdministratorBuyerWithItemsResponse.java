@@ -1,11 +1,8 @@
 package ru.ugrinovich.Spectra.response.Byer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.ugrinovich.Spectra.response.Item.ItemPurchaseHistoryResponse;
-import ru.ugrinovich.Spectra.response.Item.ItemResponse;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,21 +12,22 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ForAdministratorBuyerWithItemsResponse {
 
-    private UUID id;
+    UUID id;
 
-    private String firstName;
+    String firstName;
 
-    private String secondName;
+    String secondName;
 
-    private int age;
+    int age;
 
-    private String email;
+    String email;
 
-    private Instant createAt;
+    Instant createAt;
 
-    private Instant updateAt;
+    Instant updateAt;
 
-    private List<ItemPurchaseHistoryResponse> purchases;
+    List<ItemPurchaseHistoryResponse> purchases;
 }

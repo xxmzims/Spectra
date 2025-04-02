@@ -1,7 +1,9 @@
 package ru.ugrinovich.Spectra.services.buyer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import ru.ugrinovich.Spectra.exceptions.not_found.BuyerNotFoundException;
 import ru.ugrinovich.Spectra.exceptions.not_found.BuyersNotFoundException;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.DontHaveAnyItemsException;
 import ru.ugrinovich.Spectra.exceptions.specific_exceptions.ItemOutOfStockException;
+import ru.ugrinovich.Spectra.kafka.KafkaProducer;
 import ru.ugrinovich.Spectra.mappers.BuyerMapper;
 import ru.ugrinovich.Spectra.repositories.jpa.BuyerRepositoryJpa;
 import ru.ugrinovich.Spectra.repositories.jpa.PurchaseHistoryJpa;
@@ -35,6 +38,7 @@ public class BuyerServiceImpl implements BuyerService {
     private final BuyerMapper buyerMapper;
     private final BuyerRepositoryJpa buyerRepositoryJpa;
     private final PurchaseHistoryJpa purchaseHistoryJpa;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public List<Buyer> findAllBuyers() {
@@ -46,10 +50,17 @@ public class BuyerServiceImpl implements BuyerService {
         return buyerRepositoryJpa.findById(id).orElseThrow(() -> new BuyerNotFoundException(id));
     }
 
+    @SneakyThrows
     @Override
     public void save(Buyer buyer) {
         checkExistEmail(buyer.getEmail());
+        log.info("Сохранение сущности Buyer c id {} в БД....", buyer.getId());
         buyerRepositoryJpa.save(buyer);
+        log.info("Сущность Buyer c id {} успешно сохранена", buyer.getId());
+        log.info("--------------------------------------------------------");
+        log.info("Попытка отправки сущности Buyer c id {} в MC_loyalty....", buyer.getId());
+        kafkaProducer.sendMessage(new ObjectMapper().writeValueAsString(buyerMapper.toBuyerDTO(buyer)));
+
     }
 
     @Override
